@@ -6,7 +6,7 @@ Initial portable developer kit for Android host 0.0.16 and bridge V1: public run
 helpers/types, complete capability/manifest documentation, developer-owned backend
 and optional shared-AppView examples, browser fixtures and local validation.
 The reference bridge is synchronized from the host's canonical source. This kit
-is available as a portable GitHub release. Initial npm publication is pending.
+is distributed through npm and a portable GitHub release.
 
 ## Public developer preview
 

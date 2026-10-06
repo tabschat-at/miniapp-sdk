@@ -22,10 +22,10 @@ Tabs host accepts reviewed HTTPS entrypoints; it does not load the localhost moc
 There is currently no user-accessible sideload URL flow or automatic registration
 endpoint. Host approval is required even for a webapp asking for no capabilities.
 
-With a bundler, install the tagged SDK release instead of copying `src`:
+With a bundler, install the SDK package instead of copying `src`:
 
 ```sh
-npm install github:tabschat-at/miniapp-sdk#v0.1.0
+npm install @tabschat/miniapp-sdk
 ```
 
 ```ts
@@ -33,10 +33,9 @@ import { getHost, type HostBridgeV1 } from "@tabschat/miniapp-sdk";
 const host: HostBridgeV1 = getHost(window);
 ```
 
-The package name is `@tabschat/miniapp-sdk`; the first npm publication is pending
-publisher authentication. Once available, `npm install @tabschat/miniapp-sdk` can
-replace the GitHub install. TypeScript definitions are bundled; a plain browser
-can use the ES module directly. Deploy
+TypeScript definitions are bundled; a plain browser can use the ES module
+directly. The full developer kit and examples are available from the GitHub
+repository and release download. Deploy
 the runtime and your page assets, not `dev/`, tests, server code or mock injection.
 
 The recipe example's `/api/recipes` must be supplied by your own backend/reverse

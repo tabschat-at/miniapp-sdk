@@ -85,8 +85,8 @@ changed schema policy or network/publisher authority require review and renewed
 consent. Existing schema definitions cannot silently change through registration.
 Use a new versioned collection or arrange a migration review.
 
-The SDK and examples are available in the public GitHub repository. The first
-npm publication is pending publisher authentication. Review intake is through
+The SDK is distributed as `@tabschat/miniapp-sdk` on npm; the full kit and examples
+are available in the public GitHub repository. Review intake is through
 GitHub issues; approval and registration remain manual. This developer preview does not
 promise unrestricted web features, custom shared-AppView queries or production SLA.
 

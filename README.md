@@ -22,14 +22,15 @@ cd miniapp-sdk
 npm run dev
 ```
 
-For an application using a bundler, install the tagged GitHub release:
+For an application using a bundler, install the npm package:
 
 ```sh
-npm install github:tabschat-at/miniapp-sdk#v0.1.0
+npm install @tabschat/miniapp-sdk
 ```
 
-The npm package name is `@tabschat/miniapp-sdk`. Its initial npm publication is
-pending publisher authentication; until then, use the GitHub install above.
+The full developer kit and examples are also available as the tagged GitHub
+release `v0.1.0`. Install from GitHub with
+`npm install github:tabschat-at/miniapp-sdk#v0.1.0` if preferred.
 
 ## Start here
 

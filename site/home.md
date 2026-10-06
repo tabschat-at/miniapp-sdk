@@ -36,11 +36,10 @@ app running in Tabs.
 
 The runtime is a dependency-free ES module with bundled TypeScript declarations.
 Use any web framework or plain HTML and JavaScript. The npm package is
-`@tabschat/miniapp-sdk`; its first npm publication is pending authentication.
-Until then, a bundler can install the tagged GitHub release:
+`@tabschat/miniapp-sdk`. Install it in your application:
 
 ```sh
-npm install github:tabschat-at/miniapp-sdk#v0.1.0
+npm install @tabschat/miniapp-sdk
 ```
 
 ```js

@@ -8,8 +8,8 @@
     ".github/ISSUE_TEMPLATE/config.yml": "13064e7bea658e01e718b414fbb7b3b244f36411fe25ee2055c151f7b534547a",
     ".github/workflows/publish.yml": "794392a66caccf7b2f3c9cd9178763f05313d7a3c731488f6a575efaa1ffff1b",
     ".github/workflows/verify.yml": "28489cffa8f2a268e7105f96f07737678bfec400c68caf750cf4a7c90477e470",
-    "README.md": "239fa2e55130a3d5e86962fc3b92feae53b497db0296f6f172f7665eff8fbcf0",
-    "CHANGELOG.md": "d9b93cdacf67f84e549364d1b8f9a8e8f4a1b8c470827f67aa24de86dd1f08b3",
+    "README.md": "d6f9036922127915df2be78061d826550e4678792d96ea5d2b292c81a199a036",
+    "CHANGELOG.md": "5541a4a89fbf24d56b04953a54e12b8d7a978ce267c9011d7b66f8fd2ac76718",
     "LICENSE": "7f8f48e4266aa8fd3033dfaa4bb7f6e83a60c6e099f82d4959b81de90e67cd8f",
     "RELEASING.md": "0965008c36f62455542496d13f9f241aba84a291ea32be70c7a5938e4ff63b55",
     "src/index.d.ts": "038ceeee30cb2c671da09abc08284fa4943be21cd6e807e691f68873b44fd277",
@@ -25,8 +25,8 @@
     "docs/compatibility.md": "0f2f7749f3b725d90222df7c2516bfdc49752570609621192017ad1b3d98079b",
     "docs/manifest.md": "86ac7416fefff77abd6f402bf7a29b6f7221ee30db391190ff65e0f4b7092812",
     "docs/permissions.md": "50c40ad4e83e4107fb58f06f9aa39df849092617b9cd7a3fb0b7d292e99182b3",
-    "docs/publishing.md": "aec0336254de85425d423dd23cfc7f8a5b88fa44997be251c7b60b77f338d2d8",
-    "docs/quickstart.md": "1734f420a6f0c4ac7847a4403ddf5bf4fb44b333f9335a345db6586904c100e4",
+    "docs/publishing.md": "365b88fde7d319a8f34dca59cdb8bd9aae3f8874d3de3db0009e15c639e83021",
+    "docs/quickstart.md": "72a8e06a0d3e31a01f539c4815983401a51d6726fe722cbc4d120043440924be",
     "docs/spark-interop.md": "dbad6b4570c85cd71600cf93daa4f1bc6117f1d4cdca3901cde9433779beb3a9",
     "docs/tabs-appview.md": "cd9e0a4e260d8db85649f7d2b1ee99b951e8d2eb91700aa58364c04387c107c7",
     "docs/testing.md": "3d60500428d28410454384baad4b374624ef84ff84b840cbba9aea966eda73f5",
@@ -67,6 +67,6 @@
     "site/docs.css": "ad6170cf3072a07eb5c47525f42c992b8f0d7c9da80e6b080eae9d907d593546",
     "site/docs.js": "570ce693b53e68b30c924c736d63d0b772fb69134124f95c9c8ebba1000aee5a",
     "site/favicon.svg": "a5fefbb487be54667cd068bf1b0830ea60be702209274450a275268fa5fa51fe",
-    "site/home.md": "83c7dec8fd444a546477d8c0c47dc4ca08e54029a38ca6fb1fe89772bc556b5f"
+    "site/home.md": "32cf22c1c4aa31e1954af385fc90ba216a593fcb06324a55c4ebb8f35220d57e"
   }
 }
