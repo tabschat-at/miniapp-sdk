@@ -1,0 +1,14 @@
+{
+  "v": 1,
+  "id": "org.example.recipes",
+  "version": "1.0.0",
+  "name": "Recipe Notebook",
+  "entrypoint": "https://recipes.example.org/examples/recipe-notebook/index.html",
+  "permissions": ["records.write"],
+  "collections": ["org.example.recipes.recipe"],
+  "readCollections": [],
+  "recordPurpose": "Publish recipes to your public repository. Browse recipes using our own public recipe API.",
+  "allowedPaymentAssets": [],
+  "minimumHostVersion": "0.0.16",
+  "networkAccess": []
+}

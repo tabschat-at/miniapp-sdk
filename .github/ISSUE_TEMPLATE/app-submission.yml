@@ -1,0 +1,44 @@
+name: Submit a Tabs mini-app
+description: Request operator review for an HTTPS mini-app.
+title: "[App submission] "
+labels: ["app-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Submissions are public. Include public app details only. Never include credentials, tokens, private keys, user data, or private domain-verification proofs. A submission requests review; it does not automatically register your app or guarantee approval or a review timeline.
+  - type: input
+    id: app-url
+    attributes:
+      label: Deployed HTTPS entrypoint
+      description: The exact URL in your manifest, serving a 200 response without redirects.
+    validations:
+      required: true
+  - type: input
+    id: package-url
+    attributes:
+      label: Public manifest and Lexicon package
+      description: Link to a public repository or downloadable package containing manifest.json and required Lexicon JSON files.
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: App purpose and requested capabilities
+      description: Explain what the app does and why each permission and network origin is needed. Include a description of your public-data handling.
+    validations:
+      required: true
+  - type: textarea
+    id: testing
+    attributes:
+      label: Validation and testing
+      description: Include local preflight results, browser-preview testing, and any Android testing already performed.
+    validations:
+      required: true
+  - type: checkboxes
+    id: publisher
+    attributes:
+      label: Publisher ownership
+      options:
+        - label: I control the publisher domain and can complete ownership verification during review.
+          required: true

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Native actions</title>
+    <link rel="stylesheet" href="../shared/style.css" />
+  </head>
+  <body>
+    <h1>Chat and payments</h1>
+    <p>
+      Tabs handles each native review and every payment passkey. Browser
+      previews always cancel payments.
+    </p>
+    <label for="handle">Recipient handle (preview: bob.demo.invalid)</label
+    ><input id="handle" value="bob.demo.invalid" autocapitalize="none" />
+    <label for="amount">USDC amount</label
+    ><input id="amount" inputmode="decimal" value="0.01" />
+    <button id="chat">Open conversation</button
+    ><button id="pay">Review payment in Tabs</button>
+    <p id="status" role="status"></p>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

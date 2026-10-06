@@ -1,0 +1,18 @@
+{
+  "v": 1,
+  "id": "org.example.actions",
+  "version": "1.0.0",
+  "name": "Native Actions",
+  "entrypoint": "https://actions.example.org/examples/native-actions/index.html",
+  "permissions": [
+    "social.public.read",
+    "payments.request",
+    "chat.openConversation"
+  ],
+  "collections": [],
+  "readCollections": [],
+  "recordPurpose": "",
+  "allowedPaymentAssets": ["USDC"],
+  "minimumHostVersion": "0.0.16",
+  "networkAccess": []
+}

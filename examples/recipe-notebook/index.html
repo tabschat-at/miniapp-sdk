@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recipe Notebook</title>
+    <link rel="stylesheet" href="../shared/style.css" />
+  </head>
+  <body>
+    <h1>Recipe Notebook</h1>
+    <p>
+      Publish public recipes with Tabs; browse through your developer's own
+      backend.
+    </p>
+    <label for="title">Title</label
+    ><input id="title" maxlength="120" value="Carrot soup" />
+    <label for="ingredient">Ingredient</label
+    ><input id="ingredient" maxlength="120" value="Carrot" />
+    <button id="publish">Publish new public recipe</button
+    ><button id="update">Update last published recipe</button
+    ><button id="delete">Delete last published recipe</button>
+    <button id="browse">Browse developer's recipe feed</button>
+    <ul id="feed"></ul>
+    <p id="status" role="status"></p>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

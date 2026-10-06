@@ -1,0 +1,14 @@
+{
+  "v": 1,
+  "id": "org.example.hello",
+  "version": "1.0.0",
+  "name": "Hello Tabs",
+  "entrypoint": "https://hello.example.org/examples/hello-tabs/index.html",
+  "permissions": ["identity.basic"],
+  "collections": [],
+  "readCollections": [],
+  "recordPurpose": "",
+  "allowedPaymentAssets": [],
+  "minimumHostVersion": "0.0.16",
+  "networkAccess": []
+}

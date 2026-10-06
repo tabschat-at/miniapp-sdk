@@ -1,0 +1,14 @@
+{
+  "v": 1,
+  "id": "org.example.uploads",
+  "version": "1.0.0",
+  "name": "My Uploads",
+  "entrypoint": "https://uploads.example.org/examples/own-backend/index.html",
+  "permissions": ["identity.authenticate", "files.select"],
+  "collections": [],
+  "readCollections": [],
+  "recordPurpose": "",
+  "allowedPaymentAssets": [],
+  "minimumHostVersion": "0.0.51",
+  "networkAccess": ["https://api.uploads.example.org"]
+}
