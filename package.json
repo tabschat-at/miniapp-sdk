@@ -46,7 +46,7 @@
     "LICENSE"
   ],
   "bin": {
-    "tabs-miniapp-validate": "./tools/validate.mjs"
+    "tabs-miniapp-validate": "tools/validate.mjs"
   },
   "publishConfig": {
     "access": "public",

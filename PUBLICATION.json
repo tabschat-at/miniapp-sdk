@@ -1,6 +1,6 @@
 {
   "files": {
-    "package.json": "4bc004beea085f2e08b28fac1deed7eadf3ab6f6457d496f7cade42b8fd2ad54",
+    "package.json": "4dbdeb73049861af331b5758ac4caeed05b340d000da9735e6c19403c8532bb5",
     "package-lock.json": "cf499daf053c2fd36ce627ddb16006987de6c200e5e9a019bbd908d18ac77858",
     "tsconfig.json": "46066e46633b060b99cc85fb467effbf68eacaafd43f09fb8f89be7cd9fc0710",
     ".gitignore": "7c283453658036d85e1614684dc2f046795717c3d4ea8d4c7a5d37526eb96356",
