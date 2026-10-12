@@ -26,6 +26,7 @@ const navigation = [
     [
       ["Overview", "/"],
       ["Quickstart", "/docs/quickstart/"],
+      ["AI coding agents", "/docs/ai-agents/"],
       ["SDK & host versions", "/docs/compatibility/"],
     ],
   ],
@@ -38,7 +39,6 @@ const navigation = [
       ["Backends & sign-in", "/docs/backends/"],
       ["ATProto media", "/docs/atproto-media/"],
       ["Shared AppView", "/docs/tabs-appview/"],
-      ["Spark interoperability", "/docs/spark-interop/"],
     ],
   ],
   [

@@ -32,6 +32,12 @@ The full developer kit and examples are also available as the tagged GitHub
 release `v0.1.0`. Install from GitHub with
 `npm install github:tabschat-at/miniapp-sdk#v0.1.0` if preferred.
 
+## Build with an AI coding agent
+
+Use the [copyable compatibility prompt](docs/ai-agents.md) with an agent working
+in your app repository. It covers the manifest, custom Lexicons, mobile layout,
+permissions, backend boundaries, validation and submission.
+
 ## Start here
 
 With Node 24.12+ (24.x):
@@ -95,8 +101,8 @@ permissions. See [quickstart](docs/quickstart.md) for the corresponding manifest
 Verified app-backend sign-in and selected-file uploads are available on host
 0.0.51+: [the complete example](examples/own-backend/README.md) includes a developer-
 owned server, one-use challenges, app sessions and private uploads. The
-[backend contract](docs/backends.md) and [Spark interoperability assessment](docs/spark-interop.md)
-explain how developers own their services and where ATProto delegation is separate.
+[backend contract](docs/backends.md) explains how developers own their services
+and where ATProto delegation is separate.
 
 Download the portable source kit from
 [GitHub Releases](https://github.com/tabschat-at/miniapp-sdk/releases).

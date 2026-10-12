@@ -86,8 +86,8 @@ workers remain separate capabilities; they are not enabled by `files.select`.
 ## AT Protocol media and interoperability
 
 Uploading to your own service works with login and selection above. Uploading a
-blob **to the user's PDS** is a separate account action. A Bluesky image embed or
-Spark media record references an authorized ATProto blob, not an arbitrary URL.
+blob **to the user's PDS** is a separate account action. A public media record
+references an authorized ATProto blob, not an arbitrary URL.
 Host 0.0.52 provides the generic `blobs.upload` capability and standard ATProto
 blob references; see [ATProto media](atproto-media.md). ATProto service
 authentication remains a separate extension. Independently deployed websites can use ATProto OAuth, but the
@@ -97,9 +97,6 @@ Public repository streaming/indexing is also independent of mini-app deployment.
 The Tabs PDS now has a working `com.atproto.sync.subscribeRepos` WebSocket and
 Bluesky relay ingestion. That makes signed records discoverable to that relay;
 it does not make every other application index Tabs or accept its login proof.
-
-[The Spark compatibility assessment](spark-interop.md) distinguishes the reusable
-host capabilities from each application's schemas, AppView and authentication.
 
 For paid app fulfilment on host 0.0.62+, an optional signed payment sender commitment
 binds the authenticated DID to a chain sender without returning a wallet address.

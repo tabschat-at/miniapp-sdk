@@ -57,8 +57,13 @@ for (const pre of document.querySelectorAll("pre")) {
   const button = document.createElement("button");
   button.className = "copy";
   button.type = "button";
-  button.textContent = "Copy";
-  button.setAttribute("aria-label", "Copy code example");
+  const isPrompt = code.classList.contains("language-prompt");
+  const label = isPrompt ? "Copy prompt" : "Copy";
+  button.textContent = label;
+  button.setAttribute(
+    "aria-label",
+    isPrompt ? "Copy agent prompt" : "Copy code example",
+  );
   button.addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(code.textContent);
@@ -67,7 +72,7 @@ for (const pre of document.querySelectorAll("pre")) {
       button.textContent = "Select to copy";
     }
     setTimeout(() => {
-      button.textContent = "Copy";
+      button.textContent = label;
     }, 1800);
   });
   pre.append(button);

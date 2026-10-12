@@ -24,7 +24,7 @@ is distributed through npm and a portable GitHub release.
 - Add `files.select` and `selectFiles`, using standard HTML File APIs backed by
   Android's permission-checked document picker.
 - Document app-owned sessions/media services, issuer configuration, temporary file
-  limits and the remaining ATProto delegation needed for Spark/Bluesky media.
+  limits and the remaining ATProto delegation needed for third-party media.
 
 ## 2026-10-03 — host 0.0.52 protocol media
 

@@ -46,3 +46,6 @@ reflect mock publications. A usable verified backend is included in
 If you install the package in your app, validate its manifest with
 `npx tabs-miniapp-validate /path/to/app-package`. Full preview examples are in the
 GitHub kit; they are not bundled into the runtime npm package.
+
+Using an AI coding agent? Start with the [complete compatibility prompt](ai-agents.md),
+then check its implementation against the contracts above.

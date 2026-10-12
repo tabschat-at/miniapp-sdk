@@ -293,6 +293,15 @@ pre code {
   font-size: inherit;
   overflow-wrap: normal;
 }
+pre:has(code.language-prompt) {
+  max-height: 36rem;
+  padding-top: 44px;
+}
+pre code.language-prompt {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .copy {
   position: absolute;
   right: 9px;

@@ -1,7 +1,7 @@
 # Reusable ATProto media uploads
 
 Host 0.0.52 adds `blobs.upload`. The same method works for every approved app and
-registered Lexicon; there is no Chirp/Spark/recipe media endpoint to implement.
+registered Lexicon; there is no app-specific media endpoint to implement.
 Declare `blobs.upload`, `records.write`, the exact write collections, and
 `minimumHostVersion: "0.0.52"`. Add `files.select` if your app uses the system picker.
 New access and an entrypoint change require fresh user consent.
@@ -68,5 +68,4 @@ service authorization still need a separate scoped delegation/OAuth capability;
 the Tabs backend login proof cannot substitute for it. New protocol support should
 be a reusable permission with explicit audience/method scopes, rather than a
 named integration for each app. Reusing third-party record schemas is an operator
-registry/policy review, not a new host publishing implementation. See
-[Spark compatibility](spark-interop.md).
+registry/policy review, not a new host publishing implementation.

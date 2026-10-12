@@ -10,6 +10,13 @@ and payment review. You own your UI and backend.
 [Browse the SDK](https://github.com/tabschat-at/miniapp-sdk) ·
 [Download the kit](https://github.com/tabschat-at/miniapp-sdk/releases)
 
+## Build with an AI coding agent
+
+Give your agent a complete Tabs compatibility brief. Our
+[copyable agent prompt](../docs/ai-agents.md) covers the manifest, custom Lexicons,
+mobile design, permissions, backend sign-in, testing and review, with links to
+the relevant contracts. Use it to adapt an existing app or start a new one.
+
 ## Your first app, running locally
 
 ```sh
