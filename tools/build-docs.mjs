@@ -8,6 +8,7 @@ import {
   stat,
 } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { marked } from "marked";
 
@@ -65,6 +66,13 @@ for (const name of await readdir(path.join(root, "docs"))) {
 }
 for (const name of ["own-backend", "own-appview", "tabs-appview"])
   pages.set(`examples/${name}/README.md`, `/examples/${name}/`);
+// Version assets together with the docs so browser/CDN caches cannot mix releases.
+const assetDigest = createHash("sha256");
+for (const source of [...pages.keys(), "site/docs.css", "site/docs.js"]) {
+  assetDigest.update(source).update("\0");
+  assetDigest.update(await readFile(path.join(root, source))).update("\0");
+}
+const assetVersion = assetDigest.digest("hex").slice(0, 16);
 const escape = (value) =>
   String(value).replace(
     /[&<>"']/g,
@@ -149,7 +157,7 @@ for (const [source, route] of pages) {
   const description =
     "Build a Tabs mini-app with the public SDK, examples, API reference and developer guides.";
   const document = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escape(title)} · Tabs developers</title><meta name="description" content="${description}"><meta name="color-scheme" content="light"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/docs.css"><script defer src="/assets/docs.js"></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escape(title)} · Tabs developers</title><meta name="description" content="${description}"><meta name="color-scheme" content="light"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/docs.css?v=${assetVersion}"><script defer data-version="${assetVersion}" src="/assets/docs.js?v=${assetVersion}"></script></head>
 <body${route === "/" ? ' class="overview"' : ""}><a class="skip" href="#content">Skip to content</a>
 <header><a class="brand" href="/" aria-label="Tabs developer home"><span class="brand-mark">t</span><strong>Tabs</strong><span class="brand-label">developers</span></a><div class="header-right"><span class="preview-badge">Developer preview</span><a href="${repository}">GitHub ↗</a></div></header>
 <div class="layout"><aside class="sidebar"><label class="search-label" for="docs-search">Search documentation</label><input id="docs-search" type="search" placeholder="Find a guide or API…" autocomplete="off"><div id="search-results" aria-live="polite"></div><details class="navigation" open><summary>Documentation</summary><nav aria-label="Documentation">${nav}</nav></details><div class="sidebar-foot"><span>SDK 0.1.0 · Bridge V1</span><a href="${repository}/blob/main/LICENSE">AGPL-3.0-only</a></div></aside>
@@ -182,7 +190,8 @@ for (const [source, route] of pages) {
   );
   for (const [, href] of html.matchAll(/href="([^"]+)"/g)) {
     if (!href.startsWith("/") && !href.startsWith("#")) continue;
-    const [target, fragment] = href.split("#");
+    const [targetWithQuery, fragment] = href.split("#");
+    const target = targetWithQuery.split("?")[0];
     const file =
       target === ""
         ? path.join(output, route.slice(1), "index.html")

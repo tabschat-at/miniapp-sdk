@@ -1,3 +1,7 @@
+const docsVersion = document.currentScript?.dataset.version;
+const searchIndexUrl = docsVersion
+  ? `/assets/search.json?v=${encodeURIComponent(docsVersion)}`
+  : "/assets/search.json";
 const navigation = document.querySelector(".navigation");
 const mobile = window.matchMedia("(max-width: 700px)");
 navigation.open = !mobile.matches;
@@ -14,7 +18,7 @@ input.addEventListener("input", async () => {
   results.replaceChildren();
   if (query.length < 2) return;
   try {
-    index ??= await fetch("/assets/search.json").then((r) => {
+    index ??= await fetch(searchIndexUrl).then((r) => {
       if (!r.ok) throw new Error("Search unavailable");
       return r.json();
     });

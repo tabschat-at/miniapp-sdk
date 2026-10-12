@@ -34,8 +34,9 @@ Read these sources before implementation, following their relevant examples:
 - Testing: https://developers.tabschat.com/docs/testing/
 - SDK source and examples: https://github.com/tabschat-at/miniapp-sdk
 
-If you cannot read a source, say so and request the missing contract instead of
-inventing it. Inspect the installed SDK's types and actual exports. Use the
+If a docs URL is blocked, read the corresponding Markdown under docs/ in the
+public SDK repository. If neither source is accessible, say so and request the
+missing contract instead of inventing it. Inspect the installed SDK's types and actual exports. Use the
 published API, not a simulator-only feature or a proposed integration. The SDK
 and Tabs host have separate versions; choose a compatible minimum host version.
 
