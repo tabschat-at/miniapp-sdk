@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Submit an app · Tabs developers</title>
+    <link rel="stylesheet" href="/submit/style.css" />
+    <script type="module" src="/submit/app.js"></script>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/"
+        ><span class="brand-mark">t</span><strong>Tabs</strong></a
+      >
+      <nav>
+        <a href="/tools/simulator/">Simulator</a
+        ><a href="/tools/package-builder/">Package builder</a
+        ><a href="/docs/publishing/">Submission guide</a>
+      </nav>
+    </header>
+    <main>
+      <p class="eyebrow">APP SUBMISSION</p>
+      <h1>From URL to review.</h1>
+      <p class="intro">
+        Discover your app’s package, check its permissions and send it to Tabs
+        for review.
+      </p>
+      <section class="card">
+        <form id="discover">
+          <label for="url">Public app URL</label>
+          <div class="url-row">
+            <input
+              id="url"
+              type="url"
+              required
+              placeholder="https://your-app.example.org/"
+              maxlength="2048"
+            /><button id="inspect">Discover package</button>
+          </div>
+          <p class="hint">
+            Link manifest.json and app-package.json from your app’s HTML head.
+            <a href="/docs/manifest/#build-and-discover-an-app-package"
+              >See the manifest guide</a
+            >. Use the
+            <a href="/downloads/tabs-developer-kit.tar.gz"
+              >downloaded simulator</a
+            >
+            for localhost apps.
+          </p>
+        </form>
+        <p id="status" role="status"></p>
+      </section>
+      <section id="preview" class="card" hidden>
+        <div class="app-heading">
+          <img id="icon" alt="App icon" referrerpolicy="no-referrer" hidden />
+          <div>
+            <h2 id="name"></h2>
+            <p id="identity"></p>
+          </div>
+        </div>
+        <h3>Validation</h3>
+        <ul id="issues"></ul>
+        <ul id="warnings" class="hint"></ul>
+        <h3>Requested permissions</h3>
+        <div id="requested-permissions"></div>
+        <dl id="scopes"></dl>
+        <details>
+          <summary id="schemas-title">Lexicons</summary>
+          <pre id="schemas"></pre>
+        </details>
+        <details>
+          <summary>Manifest</summary>
+          <pre id="manifest"></pre>
+        </details>
+      </section>
+      <section id="submission" class="card" hidden>
+        <h2>Send for review</h2>
+        <p>
+          Your package is saved for operator review. Approval and publisher
+          ownership verification are required before it appears in Tabs.
+        </p>
+        <form id="submit">
+          <div class="two">
+            <label
+              >Developer name<input
+                id="developer"
+                required
+                maxlength="120"
+                autocomplete="organization" /></label
+            ><label
+              >Contact email<input
+                id="email"
+                type="email"
+                required
+                maxlength="254"
+                autocomplete="email"
+            /></label>
+          </div>
+          <label
+            >Store description<textarea
+              id="description"
+              required
+              maxlength="4000"
+              rows="4"
+            ></textarea></label
+          ><label class="check"
+            ><input id="ownership" type="checkbox" required />I own this app or
+            am authorized to submit it.</label
+          >
+          <p class="hint">
+            Contact details are only visible to Tabs reviewers. Keep secrets and
+            private user data out of your public package. Save your reference
+            after submission; email notifications are not available yet.
+          </p>
+          <button id="send">Submit app for review</button>
+        </form>
+      </section>
+      <section id="receipt" class="card" hidden>
+        <h2>Submitted for review</h2>
+        <p id="reference"></p>
+        <p>
+          Tabs will review the package and verify publisher ownership before
+          approving and publishing it. Submission does not automatically publish
+          your app.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

@@ -49,7 +49,16 @@ replace my stack or introduce a backend unless the feature needs it.
 
 2. Integrate the host
 Use @tabschat/miniapp-sdk, or its documented browser ES module when there is no
-bundler. Tabs injects window.host; getHost() reads it. Never ship mock-host
+bundler. Tabs injects window.host; getHost() reads it.
+For hosted simulator compatibility, load SDK 0.2.0 bootstrap before app startup:
+import "@tabschat/miniapp-sdk/bootstrap";
+Or load https://developers.tabschat.com/sdk/0.2.0/bootstrap.js before app scripts.
+This preserves native Tabs and standalone behavior. Allow framing by
+https://developers.tabschat.com and declare the bootstrap origin in networkAccess
+when using the hosted script. Simulated users remain the default. Approved apps
+may opt into real passkey login, genuine assertions and real record operations.
+Warn that live actions affect production data. Native-only capabilities reject.
+The optional host.environment.mode is a UI hint, never server authentication. Never ship mock-host
 injection or a replacement native bridge in the production app. Catch
 HOST_UNAVAILABLE outside Tabs and keep a useful standalone or open-in-Tabs state.
 Use describeError for safe user-facing failures. Serialize privileged actions,
@@ -83,6 +92,15 @@ font and CDN fetched by the page. Origins have no path or trailing slash. The
 publisher origin is already allowed. Configure CORS separately on my services;
 do not add protected Tabs API/auth/PDS origins or expose server credentials.
 An icon or PWA manifest does not add fields to the Tabs V1 manifest.
+Put discovery links in the app's HTML head (adjust relative paths as needed):
+<link rel="tabs-manifest" href="./manifest.json">
+<link rel="tabs-package" href="./app-package.json">
+<link rel="icon" href="./icon.png">
+Use https://developers.tabschat.com/tools/package-builder/ to generate a portable
+app-package.json containing {v:1, manifest, lexicons}, including all Lexicon
+references. Deploy the package and individual files together; keep them synchronized.
+The hosted simulator and URL submission tool discover these head links automatically.
+Use the downloaded simulator for localhost apps.
 
 4. Request only necessary permissions
 Map each requested capability to a real feature and document why it is needed:
@@ -175,8 +193,9 @@ needed. Android is supported; do not claim iOS support from browser testing.
 
 Deliver the compatible app, manifest.json, required Lexicons, an explanation of
 permissions and external origins, and concise build/deploy/test instructions.
-Include remaining blockers, operator review items and how to submit the deployed
-HTTPS app at https://github.com/tabschat-at/miniapp-sdk/issues/new?template=app-submission.yml.
+Include remaining blockers, operator review items and the URL submission tool at
+https://developers.tabschat.com/submit/ to submit the deployed
+HTTPS app at https://developers.tabschat.com/submit/.
 Public submissions must contain no credentials or private verification material.
 Do not submit, deploy, publish records or make payments without my authorization.
 ```

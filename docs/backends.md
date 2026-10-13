@@ -80,8 +80,13 @@ or finish reading while the app is open; do not persist local URI assumptions.
 
 File names, MIME types and contents are untrusted. Enforce your backend's own
 size/type/quota limits and media validation. Picker limits are host resource bounds,
-not a storage plan for your application. Camera/microphone capture and background
-workers remain separate capabilities; they are not enabled by `files.select`.
+not a storage plan for your application. Host 0.0.64+ also honors a single-image input with `accept="image/*"` and
+`capture="environment"`: the user takes and confirms one photo in the system
+camera, then the host normalizes its orientation, removes metadata, and delivers
+a read-only temporary file. Permission is rechecked on return, just as for an
+album selection; cancellation and closing the miniapp delete the temporary photo.
+Live camera/microphone streams and background workers remain blocked;
+`files.select` does not grant access to those APIs.
 
 ## AT Protocol media and interoperability
 
@@ -101,3 +106,18 @@ it does not make every other application index Tabs or accept its login proof.
 For paid app fulfilment on host 0.0.62+, an optional signed payment sender commitment
 binds the authenticated DID to a chain sender without returning a wallet address.
 See [payment fulfilment identity](api.md#payment-fulfilment-identity-host-0062).
+
+## Testing a live backend in the browser host
+
+The hosted simulator can sign in with a real Tabs passkey and issue the same
+app-scoped signed assertion as native Tabs. No preview backend is required for
+approved apps: keep your existing issuer, audience and nonce verification.
+Add the [SDK browser bootstrap](testing.md#browser-host-bootstrap) before app
+startup. Simulated users still return fixtures that must fail production login.
+Use the optional `host.environment?.mode` only to show a useful fixture-mode UI,
+never as server authentication. Live operations affect production data.
+
+The host session stays in a first-party HttpOnly cookie on the developer site,
+expires after one hour and is never sent to the embedded app. App backends
+continue to own their own session cookies and logout behavior; leaving the
+simulator does not automatically destroy a session your backend already issued.

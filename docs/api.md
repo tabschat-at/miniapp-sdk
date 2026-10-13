@@ -72,7 +72,7 @@ contract. See [shared AppView](tabs-appview.md).
 
 ## Native actions
 
-Only USDC is currently supported. Amount is a positive decimal string with at
+`host.payments` supports USDC. Amount is a positive decimal string with at
 most six fractional digits and a maximum of 18446744073709.551615 USDC (the native
 u64 unit bound). Never calculate currency with floating-point arithmetic. Memo,
 if supplied, is nonempty and at most 280 UTF-8 bytes. Resolve the recipient first
@@ -160,3 +160,34 @@ amount, coin type, recipient and the chain sender against this signed commitment
 The commitment is not settlement proof. Retain unique digests and idempotent orders
 and reconcile pending transactions before charging again. Missing wallet bindings
 return `NOT_FOUND`. Older hosts reject the optional input.
+
+## Advanced Sui wallet (host 0.0.74+)
+
+Declare `wallet.connect` plus `wallet.transactions` and/or `wallet.messages`, set `minimumHostVersion` to at least `0.0.74`, and use advanced mode. The bridge automatically registers Tabs with Wallet Standard in the embedded app page. Standard Sui dapp clients can discover it and use connect, disconnect, events, sign transaction v2, sign-and-execute transaction v2, and personal-message signing. Only `sui:mainnet` is available. A connection does not approve a signature.
+
+The portable host API exposes:
+
+| Method                             | Input                                          | Result                                                                                                    |
+| ---------------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `wallet.connect`                   | `{silent?: boolean}`                           | `{accounts: [{address, publicKey, chains}]}`; empty accounts on cancellation or missing silent connection |
+| `wallet.disconnect`                | None                                           | Completion                                                                                                |
+| `wallet.signTransaction`           | `{address, chain: "sui:mainnet", transaction}` | `{bytes, signature}`                                                                                      |
+| `wallet.signAndExecuteTransaction` | Same transaction input                         | `{state, digest, bytes?, signature?, effects?}`                                                           |
+| `wallet.signPersonalMessage`       | `{address, chain: "sui:mainnet", message}`     | `{bytes, signature}`                                                                                      |
+
+`publicKey`, messages, signed transaction bytes, signatures and effects use standard base64. Transactions accept official Sui SDK v2 JSON or base64 full BCS TransactionData. For direct bridge use, serialize SDK transactions with `await tx.toJSON({supportedIntents: ["CoinWithBalance"]})`; the Wallet Standard adapter does this for you. The native builder resolves object references and CoinWithBalance coin/balance intents. Resolve other custom intents before sending. Each transaction/message has a native review and fresh passkey; do not supply your own trusted preview.
+
+Customers pay general transaction gas with SUI. Missing gas price/budget can be selected by the node. Provided gas terms are retained. JSON without expiration gets a current-epoch bound. Full BCS sign-only transactions must have an epoch expiry. Sponsored transactions can use sign-only: collect the sponsor signature and submit independently. Tabs cannot execute a transaction requiring another gas owner's signature.
+
+Personal messages are nonempty readable UTF-8, at most 4 KiB, with no opaque/control bytes except newline, carriage return and tab. Ordinary cancellation rejects with `USER_REJECTED`. Uncertain execution returns a pending state through the direct API; Wallet Standard rejects with `TRANSACTION_PENDING` and the digest. Neither is proof of failure. The user checks Activity in Tabs; do not create a replacement transaction. Sign-only authorizations remain tracked until confirmed or proven expired, and block new transfers while uncertain. Your backend independently verifies settlement.
+
+Wallet Standard execution returns `{bytes, signature, digest, effects}` after successful confirmation. The adapter rejects a missing effects result instead of inventing one. Public wallet access does not expose any signing key or Tabs session token. External browser/desktop connection transport is not supplied by this embedded bridge.
+
+## Optional browser-host context
+
+SDK 0.2.0 adds `@tabschat/miniapp-sdk/bootstrap`, a side-effect entrypoint for
+trusted browser-host frames. It preserves native `window.host`. Browser bridges
+provide optional `host.environment` with `kind: "browser"` and `mode` equal to
+`connecting`, `simulated` or `live`. Check after an awaited host call. Native hosts
+need not provide this property. These values are UI hints; only a verified
+app-scoped assertion authenticates a user to your backend. See [testing](testing.md#browser-host-bootstrap).

@@ -4,11 +4,11 @@ A Tabs mini-app is an HTTPS web app you host. Tabs provides public identity,
 permission-controlled ATProto publishing, verified app sign-in, and native chat
 and payment review. You own your UI and backend.
 
-**Developer preview · Android · Bridge V1 · SDK 0.1.0**
+**Developer preview · Android · Bridge V1 · SDK 0.2.0**
 
 [Start building](../docs/quickstart.md) ·
 [Browse the SDK](https://github.com/tabschat-at/miniapp-sdk) ·
-[Download the kit](https://github.com/tabschat-at/miniapp-sdk/releases)
+[Download the kit](https://developers.tabschat.com/downloads/tabs-developer-kit.tar.gz)
 
 ## Build with an AI coding agent
 
@@ -16,6 +16,15 @@ Give your agent a complete Tabs compatibility brief. Our
 [copyable agent prompt](../docs/ai-agents.md) covers the manifest, custom Lexicons,
 mobile design, permissions, backend sign-in, testing and review, with links to
 the relevant contracts. Use it to adapt an existing app or start a new one.
+
+## Developer tools
+
+- [Host simulator](/tools/simulator/): test public HTTPS apps on phone and folding screen sizes with simulated users and native prompts, or opt into a real Tabs account for approved live apps.
+- [App-package builder](/tools/package-builder/): create a manifest, edit Lexicon fields and download the complete package.
+- [Submit an app](/submit/): discover your deployed package, resolve validation issues and send it for review.
+
+Use the [downloaded simulator](../dev-tools/README.md) for localhost apps. Online
+apps must allow framing by developers.tabschat.com and load the [SDK browser bootstrap](../docs/testing.md#browser-host-bootstrap). The browser simulator does not replace testing in Tabs.
 
 ## Your first app, running locally
 
@@ -27,8 +36,8 @@ npm run dev
 
 Open `http://127.0.0.1:4173` and try Hello Tabs. The preview needs no account or
 dependency installation. It uses fake identities and in-memory records; payment
-requests always cancel. Real login, uploads and native actions need a reviewed
-app running in Tabs.
+requests always cancel. Real sign-in and record operations also work for approved apps in the hosted
+simulator. Uploads, payments, wallet signing and chat opening require native Tabs.
 
 ## Start small, add the capabilities you need
 
@@ -65,8 +74,9 @@ button.onclick = async () => {
 ## From preview to a Tabs listing
 
 Host your app over HTTPS, validate the manifest, and
-[submit it for review](https://github.com/tabschat-at/miniapp-sdk/issues/new?template=app-submission.yml).
-Include your public entrypoint, manifest, Lexicons and requested capabilities.
+[submit it for review](/submit/).
+The submission tool discovers your manifest and Lexicons from links in the HTML
+head, validates the package and shows the requested permissions.
 Operator review and domain verification are required; there is no automatic
 approval or public sideload flow. Users choose which permissions to grant.
 

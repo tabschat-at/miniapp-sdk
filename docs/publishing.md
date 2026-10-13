@@ -8,7 +8,7 @@ GET-only navigation inside that directory. The host limits main-frame HTML to
 
 Cookies/DOM storage are isolated per account/app. HTTPS requests to the publisher
 and declared origins remain subject to browser CORS. Frames, service/web workers,
-automatic popups, JavaScript alert/confirm/prompt, file/content URLs, downloads, camera,
+automatic popups, JavaScript alert/confirm/prompt, file/content URLs, downloads, live camera streams,
 microphone and location requests are blocked. Use DOM dialogs and inline messages.
 Payment/chat integration uses the named bridge methods, not device/browser APIs.
 Host 0.0.53 supports ordinary user-clicked HTTP(S) links: links outside the app's
@@ -43,26 +43,40 @@ navigation restrictions.
 
 ## Submit the app
 
-Give the Tabs operator your manifest, required Lexicon JSON files, publisher
-domain verification, deployed HTTPS URL and a description of the requested
-capabilities/network services. The operator reviews domain ownership, page
-behavior, public-data privacy and schema bounds. The current App Store has no
-public developer submission dashboard, automated approval or developer accounts.
-SDK local validation does not add a listing.
+Open the [app submission tool](/submit/) and enter your exact public HTTPS
+entrypoint. Add these links in your app's HTML **head**, then deploy the generated
+files alongside your app:
 
-Use the public [app submission form](https://github.com/tabschat-at/miniapp-sdk/issues/new?template=app-submission.yml)
-to request review. Include the public HTTPS entrypoint, a link to your manifest
-and Lexicon package, requested permissions/origins and validation results. GitHub
-issues are public: never attach secrets, user data or private ownership proofs.
-The operator will arrange publisher verification during review. Submission does
-not guarantee acceptance or a response timeline.
+```html
+<link rel="tabs-manifest" href="./manifest.json" />
+<link rel="tabs-package" href="./app-package.json" />
+<link rel="icon" href="./icon.png" />
+```
 
-The operator uses the management dashboard's App Store listing editor. Enter the
-reviewed manifest and, for new collections, a JSON array of the required Lexicon
-documents in **Reviewed Lexicons**. Saving validates and registers the schemas and
-listing in one database transaction. API, PDS and AppView refresh the shared
-registry live; publishing a new app needs no backend deployment or Flutter rebuild.
-Apps needing no new schemas can leave the field empty.
+The [package builder](/tools/package-builder/) generates the manifest, complete
+Lexicon dependency set, portable package and discovery snippet. Keep manifest.json
+and the package synchronized. Discovery also supports conventional manifest.json
+and lexicons/<collection>.json paths, but explicit links are recommended.
+
+The submission tool fetches public metadata, validates the manifest and schemas,
+and shows requested permissions, collections, payment assets and network origins.
+Resolve validation issues, review the package, then provide your developer name,
+contact email and store description. Contact information is only visible to Tabs
+reviewers. Save the submission reference; email notifications are not available yet.
+The package is fetched again before submission so changes cannot bypass validation.
+Localhost apps use the downloaded simulator; submission requires a public URL.
+
+A valid package enters the management dashboard's **App review** queue. The operator
+reviews the saved manifest and Lexicons, verifies publisher ownership separately,
+checks app behavior and public-data privacy, and selects **Approve & publish**.
+Approval registers the reviewed schemas and App Store listing in one database
+transaction. Rejection requires a review reason. Submission alone never publishes
+an app or grants a user's permissions. GitHub issues are no longer required.
+
+API, PDS and AppView refresh the shared schema registry live; publishing an app
+needs no backend deployment or Flutter rebuild. The App Store editor remains
+available for operator-managed listings. Developer contact fields are unverified
+until the operator confirms ownership; they are not proof of publisher identity.
 
 New definitions must use the app ID's namespace (for example,
 `org.example.recipes.recipe` for app `org.example.recipes`). Include all schema
@@ -86,8 +100,7 @@ consent. Existing schema definitions cannot silently change through registration
 Use a new versioned collection or arrange a migration review.
 
 The SDK is distributed as `@tabschat/miniapp-sdk` on npm; the full kit and examples
-are available in the public GitHub repository. Review intake is through
-GitHub issues; approval and registration remain manual. This developer preview does not
+are available in the public GitHub repository. Review intake is through the developer site; approval and registration remain manual. This developer preview does not
 promise unrestricted web features, custom shared-AppView queries or production SLA.
 
 Source manifests seed missing catalog entries once; they never overwrite dashboard edits. Publish a reviewed newer manifest through the dashboard when updating an existing app. Store presentation metadata is separate from the bridge manifest.

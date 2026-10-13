@@ -11,9 +11,12 @@
 4. Host the page at a stable HTTPS URL with valid TLS and no entrypoint redirect.
    For another API or asset origin, declare the exact HTTPS origin in
    `networkAccess`; the API must also permit your publisher origin through CORS.
-5. Run `npm run validate -- /path/to/app-package`. Send the manifest and any
-   Lexicons using the [app submission form](https://github.com/tabschat-at/miniapp-sdk/issues/new?template=app-submission.yml).
-   Local preflight is not registration. Submissions are public; include no credentials.
+5. Use the [package builder](/tools/package-builder/) to generate the manifest and
+   Lexicons. Add its `tabs-manifest` and `tabs-package` links to your HTML head and
+   deploy those files together. Run `npm run validate -- /path/to/app-package`,
+   then enter the deployed URL in the [submission tool](/submit/). Review the
+   discovered package and permissions before submitting. Public package files
+   must include no secrets; contact details are private to Tabs reviewers.
 6. After approval, open the listing inside Tabs. Accept or decline the first-visit
    sheet and check native behavior on a real device.
 
@@ -29,6 +32,7 @@ npm install @tabschat/miniapp-sdk
 ```
 
 ```ts
+import "@tabschat/miniapp-sdk/bootstrap";
 import { getHost, type HostBridgeV1 } from "@tabschat/miniapp-sdk";
 const host: HostBridgeV1 = getHost(window);
 ```
@@ -49,3 +53,8 @@ GitHub kit; they are not bundled into the runtime npm package.
 
 Using an AI coding agent? Start with the [complete compatibility prompt](ai-agents.md),
 then check its implementation against the contracts above.
+
+For hosted browser testing, load the [browser bootstrap](testing.md#browser-host-bootstrap)
+in your regular deployment and allow the developer site to frame your app.
+Simulated users are the default; approved apps can opt into a real Tabs account
+for backend sign-in and record operations.

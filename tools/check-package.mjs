@@ -25,11 +25,36 @@ try {
   const files = pack.files.map((file) => file.path);
   for (const required of [
     "src/index.js",
+    "src/bootstrap.js",
     "src/index.d.ts",
     "server/auth.mjs",
     "server/auth.d.mts",
     "dev/mock-host.js",
     "dev/mock-host.d.ts",
+    "dev-tools/simulator/server.mjs",
+    "dev-tools/simulator/index.html",
+    "dev-tools/simulator/bridge.js",
+    "dev-tools/simulator/host.js",
+    "dev-tools/simulator/library.js",
+    "dev-tools/simulator/preferences.js",
+    "dev-tools/simulator/motion.js",
+    "dev-tools/simulator/session.js",
+    "dev-tools/simulator/welcome-tour.js",
+    "dev-tools/common/tool-theme.css",
+    "dev-tools/simulator/native-ui.js",
+    "dev-tools/simulator/sheets.js",
+    "dev-tools/simulator/add-project.js",
+    "dev-tools/simulator/discovery.mjs",
+    "dev-tools/common/manifest.js",
+    "dev-tools/common/records.js",
+    "dev-tools/common/app-package.js",
+    "dev-tools/vendor/lexicon.js",
+    "dev-tools/vendor/LICENSES.txt",
+    "dev-tools/manifest-generator/fields.js",
+    "dev-tools/manifest-generator/index.html",
+    "dev-tools/manifest-generator/app.js",
+    "dev-tools/manifest-generator/model.js",
+    "dev-tools/manifest-generator/style.css",
     "tools/validate.mjs",
     "LICENSE",
   ])
@@ -77,6 +102,11 @@ try {
     const scope={}; installMockHost(manifest,{},scope);
     assert.equal(getHost(scope).v,1);
     assert.equal(typeof verifyTabsAssertion,'function');
+    const {createRecordSchemas}=await import('./node_modules/@tabschat/miniapp-sdk/dev-tools/common/records.js');
+    const {demoLexicons,demoManifest}=await import('./node_modules/@tabschat/miniapp-sdk/dev-tools/simulator/host.js');
+    const schemas=createRecordSchemas(demoLexicons), collection=demoManifest.collections[0];
+    schemas.validate(collection,{$type:collection,text:'Offline fixture'});
+    assert.throws(()=>schemas.validate(collection,{$type:collection,text:42}));
     console.log('Packed ESM exports work from an independent consumer');
   `,
     ],
@@ -126,6 +156,21 @@ try {
     { cwd: consumer, encoding: "utf8" },
   );
   assert.match(validation, /local preflight passed/);
+  assert.match(
+    execFileSync(
+      process.execPath,
+      [npm, "exec", "--offline", "--", "tabs-miniapp-simulate", "--help"],
+      {
+        cwd: consumer,
+        encoding: "utf8",
+        env: {
+          ...process.env,
+          npm_config_cache: path.join(temporary, "cache"),
+        },
+      },
+    ),
+    /Tabs SDK simulator/,
+  );
   assert.match(
     execFileSync(
       process.execPath,

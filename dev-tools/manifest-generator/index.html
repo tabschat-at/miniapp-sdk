@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tabs · App-package builder</title>
+    <link rel="stylesheet" href="/manifest-generator/style.css" />
+    <script type="module" src="/manifest-generator/app.js"></script>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/"
+        ><span class="brand-mark">t</span><strong>Tabs</strong></a
+      ><span class="tag">DEVELOPER TOOLS</span><a href="/">← Host simulator</a>
+    </header>
+    <main>
+      <div class="intro">
+        <p class="eyebrow">APP-PACKAGE BUILDER</p>
+        <h1>Build your app’s<br />Tabs package.</h1>
+        <p>
+          Choose features, define your record fields, and download a package
+          ready to test locally.
+        </p>
+      </div>
+      <div class="workspace">
+        <form id="editor" novalidate>
+          <section>
+            <div class="section-heading">
+              <h2>01 <span>Your app</span></h2>
+              <label class="import"
+                >Import package / manifest<input
+                  id="import"
+                  type="file"
+                  accept=".json,application/json"
+              /></label>
+            </div>
+            <label
+              >Start with a template<select id="template">
+                <option value="basic">Basic app</option>
+                <option value="notes">Notes & records</option>
+                <option value="signin">Backend sign-in</option>
+                <option value="payments">Payments</option>
+              </select></label
+            >
+            <div class="two">
+              <label
+                >App name<input
+                  id="name"
+                  value="My app"
+                  maxlength="60"
+                  required /></label
+              ><label
+                >Version<input id="version" value="1.0.0" required
+              /></label>
+            </div>
+            <label
+              >App ID<input
+                id="id"
+                value="org.example.myapp"
+                required
+                spellcheck="false"
+              /><small
+                >Reverse your domain and add your app: example.org →
+                org.example.myapp.</small
+              ></label
+            >
+            <label
+              >Production app URL<input
+                id="entrypoint"
+                type="url"
+                value="https://example.org/app/"
+                required
+              /><small
+                >HTTPS, with no query or fragment. You can use a localhost URL
+                separately in the simulator.</small
+              ></label
+            >
+          </section>
+          <section>
+            <h2>02 <span>Choose features</span></h2>
+            <p class="hint">Ask only for the capabilities your app uses.</p>
+            <div id="features"></div>
+          </section>
+          <section id="record-settings" hidden>
+            <h2>03 <span>Record access</span></h2>
+            <label id="write-setting"
+              >Write collections<textarea
+                id="collections"
+                rows="2"
+                placeholder="org.example.myapp.note"
+              ></textarea>
+            </label>
+            <label id="read-setting"
+              >Read collections<textarea
+                id="readCollections"
+                rows="2"
+                placeholder="org.example.myapp.note"
+              ></textarea>
+            </label>
+            <p class="hint">
+              Exact collection IDs, one per line. Starter schemas use your app’s
+              domain namespace. Include existing schemas unchanged when using
+              shared collections.
+            </p>
+            <label
+              >Explain why you need these records<input
+                id="recordPurpose"
+                maxlength="200"
+                placeholder="Save and manage your public notes."
+              /><small
+                >Shown in the first-run permission sheet. Records are
+                public.</small
+              ></label
+            >
+          </section>
+          <section id="lexicon-settings" hidden>
+            <div class="section-heading">
+              <h2>04 <span>Record fields</span></h2>
+              <label class="import"
+                >Import Lexicons<input
+                  id="import-schemas"
+                  type="file"
+                  multiple
+                  accept=".json,application/json"
+              /></label>
+            </div>
+            <p class="hint">
+              One schema per collection. Define the public data your app saves.
+              Use Advanced JSON for nested objects, references, unions or
+              attachments. Import reviewed shared schemas unchanged.
+            </p>
+            <div id="field-editors"></div>
+          </section>
+          <section>
+            <h2>05 <span>Network & branding</span></h2>
+            <label
+              >Additional network origins<textarea
+                id="networkAccess"
+                rows="2"
+                placeholder="https://api.example.org"
+              ></textarea
+              ><small
+                >Exact HTTPS origins, one per line. Leave blank if no extra
+                origins are needed.</small
+              ></label
+            >
+            <label
+              >Icon URL (optional)<input
+                id="iconUrl"
+                type="url"
+                placeholder="https://example.org/icon.png"
+              /><small
+                >Branding goes in an HTML link, separate from the Tabs V1
+                manifest.</small
+              ></label
+            >
+            <details>
+              <summary>Host compatibility</summary>
+              <label
+                >Minimum host version<input
+                  id="minimumHostVersion"
+                  placeholder="Automatic from selected features"
+                /><small
+                  >Leave blank to use the required feature floor.</small
+                ></label
+              >
+            </details>
+          </section>
+        </form>
+        <aside class="output">
+          <div class="output-heading">
+            <h2>Your app package</h2>
+            <span id="validation" role="status"></span>
+          </div>
+          <p id="error" role="alert"></p>
+          <div class="output-actions">
+            <button id="download-package" class="primary">
+              Download package.zip</button
+            ><button id="download">Manifest only</button
+            ><button id="copy">Copy JSON</button>
+          </div>
+          <pre
+            id="json"
+            tabindex="0"
+            aria-label="Generated manifest JSON"
+          ></pre>
+          <details open class="preview">
+            <summary>First-run permission preview</summary>
+            <h3 id="preview-name"></h3>
+            <p id="preview-host" class="hint"></p>
+            <div id="preview-permissions"></div>
+            <p id="preview-purpose"></p>
+          </details>
+          <section id="schemas" hidden>
+            <h3>Record schemas</h3>
+            <p class="hint">
+              Included in the ZIP, together with manifest.json and a portable
+              app-package.json you can import in the simulator.
+            </p>
+            <div id="schema-downloads"></div>
+            <label>Try a record<select id="record-collection"></select></label>
+            <label
+              >Record JSON<textarea
+                id="record-example"
+                rows="8"
+                spellcheck="false"
+              ></textarea>
+            </label>
+            <button id="validate-record">Validate record</button>
+            <p id="record-result" role="status"></p>
+          </section>
+          <section>
+            <h3>Let the simulator find your app</h3>
+            <p class="hint">
+              Copy the ZIP contents beside your app and add this to your HTML
+              &lt;head&gt;. The simulator also checks manifest.json beside the
+              entered URL and at the site root.
+            </p>
+            <pre id="snippet" tabindex="0"></pre>
+            <button id="copy-snippet">Copy HTML links</button>
+          </section>
+          <section class="next">
+            <h3>Ready for a first run</h3>
+            <ol>
+              <li>Place the downloaded files in your app package.</li>
+              <li>
+                Run <code>npx tabs-miniapp-validate ./your-app</code> to check
+                the complete package.
+              </li>
+              <li>
+                <a href="/">Open the simulator</a> and add your app’s
+                development URL.
+              </li>
+            </ol>
+            <p class="hint">
+              Local checks use the host’s Lexicon validator and record limits.
+              Operator schema registration and approval are still required. This
+              tool does not infer capabilities from your source code.
+            </p>
+          </section>
+          <p id="notice" role="status"></p>
+        </aside>
+      </div>
+    </main>
+  </body>
+</html>

@@ -142,6 +142,13 @@ function installTabsHost(transport, runtimeSessionId) {
       update: (input) => call("records.update", input),
       delete: (input) => call("records.delete", input),
     }),
+    wallet: Object.freeze({
+      connect: (input = {}) => call("wallet.connect", input),
+      disconnect: () => call("wallet.disconnect"),
+      signTransaction: (input) => call("wallet.signTransaction", input),
+      signAndExecuteTransaction: (input) => call("wallet.signAndExecuteTransaction", input),
+      signPersonalMessage: (input) => call("wallet.signPersonalMessage", input),
+    }),
     payments: Object.freeze({
       resolve: (handle) => call("payments.resolve", { handle }),
       request: (input) => call("payments.request", input),
@@ -158,4 +165,64 @@ function installTabsHost(transport, runtimeSessionId) {
     writable: false,
     configurable: false,
   });
+  installTabsSuiWallet();
+}
+
+
+// Wallet Standard transport for dapps running in an authorized Tabs WebView.
+// It carries public requests only. Keys, approvals, building, and signing stay native.
+function installTabsSuiWallet(scope = window) {
+  if (!scope.addEventListener || !scope.dispatchEvent || !scope.host) return;
+  const listeners = new Set();
+  let accounts = [];
+  function update(next) {
+    accounts = Object.freeze(next);
+    for (const listener of listeners) listener({ accounts });
+  }
+  const features = ["sui:signTransaction", "sui:signAndExecuteTransaction", "sui:signPersonalMessage"];
+  const wallet = {
+    version: "1.0.0", name: "Tabs", chains: Object.freeze(["sui:mainnet"]),
+    icon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiM3YzVjZmYiLz48cGF0aCBkPSJNMTYgMTZoMzJ2OEgzNnYyNEgyOHYtMjRIMTZ6IiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==",
+    get accounts() { return accounts; },
+    features: {
+      "standard:connect": { version: "1.0.0", connect: async (options = {}) => {
+        const result = await scope.host.wallet.connect({ silent: options.silent === true });
+        update(result.accounts.map((a) => Object.freeze({ ...a, publicKey: Uint8Array.from(atob(a.publicKey), (c) => c.charCodeAt(0)), chains: Object.freeze(a.chains), features: Object.freeze(features) })));
+        return { accounts };
+      } },
+      "standard:disconnect": { version: "1.0.0", disconnect: async () => {
+        update([]); await scope.host.wallet.disconnect();
+      } },
+      "standard:events": { version: "1.0.0", on: (event, listener) => {
+        if (event !== "change") throw new Error("Unsupported wallet event");
+        listeners.add(listener); return () => listeners.delete(listener);
+      } },
+      "sui:signTransaction": { version: "2.0.0", signTransaction: (input) => sign(input, false) },
+      "sui:signAndExecuteTransaction": { version: "2.0.0", signAndExecuteTransaction: (input) => sign(input, true) },
+      "sui:signPersonalMessage": { version: "1.1.0", signPersonalMessage: async (input) => {
+        check(input);
+        if (!(input.message instanceof Uint8Array) || input.message.length > 4096) throw new Error("Unsupported message");
+        return scope.host.wallet.signPersonalMessage({ address: input.account.address, chain: input.chain ?? "sui:mainnet", message: toBase64(input.message) });
+      } },
+    },
+  };
+  function check(input) {
+    if (input.signal?.aborted) throw Object.assign(new Error("Request cancelled"), { code: "USER_REJECTED" });
+    if (!accounts.some((a) => a === input.account) || (input.chain && input.chain !== "sui:mainnet")) throw new Error("Connect your Sui mainnet account first");
+  }
+  function toBase64(bytes) { let value = ""; for (const byte of bytes) value += String.fromCharCode(byte); return btoa(value); }
+  async function sign(input, execute) {
+    check(input);
+    // Preserve SDK coin intents for the native builder; no RPC runs in this adapter.
+    const transaction = await input.transaction.toJSON({ supportedIntents: ["CoinWithBalance"] });
+    check(input);
+    const request = { address: input.account.address, chain: input.chain ?? "sui:mainnet", transaction };
+    const result = await scope.host.wallet[execute ? "signAndExecuteTransaction" : "signTransaction"](request);
+    if (execute && result.state !== "confirmed") throw Object.assign(new Error("Check this transaction in Tabs Activity."), { code: "TRANSACTION_PENDING", digest: result.digest });
+    if (execute && !result.effects) throw Object.assign(new Error("Transaction confirmed; effects are unavailable."), { code: "EFFECTS_UNAVAILABLE", digest: result.digest });
+    return execute ? { bytes: result.bytes, signature: result.signature, digest: result.digest, effects: result.effects } : { bytes: result.bytes, signature: result.signature };
+  }
+  scope.addEventListener("tabs-wallet-disconnect", () => update([]));
+  scope.addEventListener("wallet-standard:app-ready", (event) => event.detail.register(wallet));
+  scope.dispatchEvent(new CustomEvent("wallet-standard:register-wallet", { detail: (api) => api.register(wallet) }));
 }

@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tabs · Host simulator</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body class="simulator">
+    <header class="topbar">
+      <a class="brand" href="/"
+        ><span class="brand-mark">t</span><strong>Tabs</strong></a
+      >
+      <span class="divider"></span><strong>Host simulator</strong>
+      <span class="badge">DEVELOPER TOOLS</span>
+      <div class="host-session" aria-label="Host session">
+        <label class="session-mode-label" for="session-mode">Account</label>
+        <select id="session-mode" aria-label="Account mode">
+          <option value="simulated" selected>Simulated user</option>
+          <option value="live">Real Tabs account</option>
+        </select>
+        <div class="session">
+          <span id="session-avatar" class="avatar">A</span>
+          <div>
+            <strong id="identity">Signed out</strong
+            ><small id="handle">Choose a fixture user</small>
+          </div>
+        </div>
+        <button id="signin">Sign in</button>
+        <button id="signout">Sign out</button>
+        <button id="reset">Reset first run</button>
+      </div>
+    </header>
+    <div id="live-notice" role="status" hidden>
+      <strong>LIVE ACCOUNT</strong> Actions affect real data. App sign-in and
+      granted record operations use your real Tabs account.
+      <button id="leave-live">Return to simulated user</button>
+    </div>
+    <p id="session-error" role="alert" hidden></p>
+    <main class="workspace inspector-collapsed" id="workspace">
+      <section class="preview-area" aria-label="Device preview">
+        <div
+          class="preview-toolbar"
+          role="region"
+          aria-label="Display controls"
+        >
+          <div class="preview-settings">
+            <label class="toolbar-field"
+              >Device<select id="device"></select
+            ></label>
+            <div id="custom-dimensions" class="dimensions">
+              <label
+                >W<input
+                  aria-label="Width"
+                  id="width"
+                  type="number"
+                  min="240"
+                  max="2000"
+                  value="412"
+                  disabled
+              /></label>
+              <label
+                >H<input
+                  aria-label="Height"
+                  id="height"
+                  type="number"
+                  min="240"
+                  max="2000"
+                  value="915"
+                  disabled
+              /></label>
+            </div>
+            <button id="fold-device" hidden>Unfold</button>
+            <button
+              id="rotate"
+              class="toolbar-icon"
+              aria-label="Rotate device"
+              title="Rotate device"
+            >
+              ↻
+            </button>
+            <label class="check"
+              ><input id="fit" type="checkbox" checked /> Fit</label
+            >
+          </div>
+          <div class="preview-actions">
+            <button
+              id="appearance"
+              class="toolbar-icon"
+              aria-label="Dark appearance"
+              aria-pressed="false"
+              title="Switch to dark appearance"
+            >
+              ☾
+            </button>
+            <button
+              id="reload"
+              class="toolbar-icon"
+              aria-label="Reload app"
+              title="Reload app"
+            >
+              ↻
+            </button>
+            <button
+              id="toggle-inspector"
+              class="toolbar-icon inspector-toggle"
+              aria-label="Show inspector"
+              title="Show inspector"
+              aria-expanded="false"
+              aria-controls="inspector"
+            >
+              ☰
+            </button>
+          </div>
+        </div>
+        <div id="canvas">
+          <div id="device-holder">
+            <div id="phone">
+              <div class="statusbar">
+                <span>9:41</span
+                ><span id="host-status">SIMULATED HOST &nbsp; ▰</span>
+              </div>
+              <div class="host-viewport">
+                <section id="launcher" aria-label="Tabs Apps screen">
+                  <header class="launcher-header">
+                    <div class="native-tabs">
+                      <span>Chats</span><span class="selected">Apps</span>
+                    </div>
+                    <span
+                      id="launcher-avatar"
+                      class="native-avatar"
+                      aria-label="Fixture account"
+                      >A</span
+                    >
+                  </header>
+                  <div class="launcher-content">
+                    <div class="launcher-heading">
+                      <span>Your apps</span
+                      ><button id="edit-apps" class="native-text-button">
+                        Edit</button
+                      ><button
+                        id="add-app"
+                        class="native-icon-button"
+                        aria-label="Add development app"
+                        title="Add app"
+                      ></button>
+                    </div>
+                    <div id="app-grid"></div>
+                    <p class="launcher-note">
+                      Development apps stay in this browser.<br />Add a project
+                      with + to test its first run.
+                    </p>
+                  </div>
+                </section>
+                <div id="miniapp-surface" hidden>
+                  <header id="miniapp-header" hidden>
+                    <button
+                      id="close-app"
+                      class="native-icon-button"
+                      aria-label="Close app"
+                      title="Close app"
+                    ></button
+                    ><span id="miniapp-title"></span
+                    ><button
+                      id="app-permissions"
+                      class="native-icon-button"
+                      aria-label="App permissions"
+                      title="App permissions"
+                    ></button>
+                  </header>
+                  <div id="app-loading" hidden role="status">
+                    <span class="native-spinner"></span>Opening app…
+                  </div>
+                  <iframe
+                    id="app-frame"
+                    title="Mini-app preview"
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-downloads"
+                    hidden
+                  ></iframe>
+                </div>
+              </div>
+              <div class="homebar"><span></span></div>
+              <div id="sheet-overlay" hidden>
+                <section
+                  class="sheet"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="sheet-title"
+                  tabindex="-1"
+                >
+                  <div class="native-drag-handle" aria-hidden="true"></div>
+                  <h2 id="sheet-title"></h2>
+                  <p id="sheet-description"></p>
+                  <div id="sheet-fields"></div>
+                  <p id="sheet-error" role="alert"></p>
+                  <div id="sheet-actions"></div>
+                </section>
+              </div>
+            </div>
+            <button
+              id="resize-width"
+              class="viewport-resizer resize-width"
+              aria-label="Resize viewport width"
+              title="Drag to resize width"
+              hidden
+            >
+              ⋮
+            </button>
+            <button
+              id="resize-height"
+              class="viewport-resizer resize-height"
+              aria-label="Resize viewport height"
+              title="Drag to resize height"
+              hidden
+            >
+              ⋯
+            </button>
+            <button
+              id="resize-both"
+              class="viewport-resizer resize-both"
+              aria-label="Resize viewport"
+              title="Drag to resize viewport"
+              hidden
+            >
+              ◢
+            </button>
+          </div>
+        </div>
+        <footer>
+          <span id="display-note"></span><br />
+          Responsive layout preview · Browser rendering · No native WebView or
+          OS emulation
+        </footer>
+      </section>
+      <div
+        id="inspector-resizer"
+        hidden
+        role="separator"
+        tabindex="0"
+        aria-label="Resize inspector"
+        aria-orientation="vertical"
+        aria-valuemin="260"
+        aria-valuemax="560"
+        aria-valuenow="320"
+      ></div>
+      <aside
+        class="inspector"
+        id="inspector"
+        aria-label="Host inspector"
+        hidden
+      >
+        <div class="section-title">
+          <h2>Host inspector</h2>
+          <button
+            id="close-inspector"
+            class="subtle"
+            aria-label="Close inspector"
+          >
+            ×
+          </button>
+        </div>
+        <p>
+          <a class="tool-link" href="/manifest-generator/index.html"
+            >App-package builder ↗</a
+          >
+        </p>
+        <details open>
+          <summary>Record schemas</summary>
+          <p id="schema-status" class="hint" role="status"></p>
+          <label
+            >Import app-package.json or Lexicons<input
+              id="import-package"
+              type="file"
+              multiple
+              accept=".json,application/json"
+          /></label>
+          <p class="hint">
+            Schemas stay with this project. Importing changed schemas starts a
+            fresh session. Files from the builder ZIP can also be discovered
+            from your app’s HTML head.
+          </p>
+        </details>
+        <details>
+          <summary>Connection & manifest</summary>
+          <p class="hint">
+            Apps using the SDK bootstrap connect automatically. Static apps:
+            launch with
+            <code>--app ./dist --manifest ./manifest.json</code>. Running dev
+            server: add this script before app scripts in development, then load
+            it with + on the Apps screen.
+          </p>
+          <p id="app-url" class="hint"></p>
+          <p id="connection" class="connection" role="status">
+            Waiting for app…
+          </p>
+          <pre id="snippet"></pre>
+          <label for="manifest">Active app manifest</label
+          ><textarea id="manifest" rows="10" spellcheck="false"></textarea
+          ><button id="apply-manifest">Apply manifest & reset</button>
+          <p class="hint">
+            Only declared capabilities and collections can be granted. External
+            apps must allow framing. Live mode uses approved server policy;
+            manifest and schema overrides apply only to simulated users.
+          </p>
+        </details>
+        <section>
+          <label class="check"
+            ><input id="offline" type="checkbox" /> Simulate host
+            unavailable</label
+          ><label for="latency">Host response delay</label
+          ><select id="latency">
+            <option value="0">Instant</option>
+            <option value="300">300 ms</option>
+            <option value="1500">1.5 seconds</option>
+            <option value="5000">5 seconds</option></select
+          ><label for="payment-result">Payment review outcome</label
+          ><select id="payment-result">
+            <option value="cancelled">Cancelled</option>
+            <option value="sent">Sent · fixture digest</option>
+            <option value="pending">Pending</option>
+            <option value="failed">Failed</option>
+            <option value="expired">Expired</option>
+          </select>
+        </section>
+        <details id="permission-details" open>
+          <summary>
+            Permissions
+            <span id="permission-warning" class="deny" hidden></span>
+          </summary>
+          <div class="section-title permission-actions">
+            <button id="clear-permissions" class="subtle">Clear</button>
+          </div>
+          <div id="permissions"><p class="hint">No decisions yet.</p></div>
+        </details>
+        <section>
+          <div class="section-title">
+            <h3>Activity</h3>
+            <button id="clear-log" class="subtle">Clear</button>
+          </div>
+          <ol id="activity" aria-live="polite"></ol>
+        </section>
+        <details>
+          <summary>In-memory records <span id="record-count">0</span></summary>
+          <pre id="records">[]</pre>
+        </details>
+        <p id="error" role="alert"></p>
+      </aside>
+    </main>
+    <dialog
+      id="welcome-tour"
+      aria-labelledby="tour-title"
+      aria-describedby="tour-description"
+    >
+      <div id="tour-highlight" aria-hidden="true"></div>
+      <section class="tour-card">
+        <p class="eyebrow" id="tour-step">WELCOME · 1 OF 2</p>
+        <h2 id="tour-title">Your simulated Tabschat user</h2>
+        <p id="tour-description"></p>
+        <div class="tour-actions">
+          <button id="tour-skip" class="subtle">Skip tour</button>
+          <button id="tour-back" hidden>Back</button>
+          <button id="tour-next" class="primary" autofocus>Next</button>
+        </div>
+      </section>
+    </dialog>
+    <dialog id="session-dialog" aria-labelledby="session-title">
+      <form method="dialog">
+        <h2 id="session-title">Sign in to the simulator</h2>
+        <p class="hint" id="session-description">
+          Choose the Tabs user entering your apps. This fixture identity is
+          shared across every mini-app. Switching users clears app consent and
+          fixture records.
+        </p>
+        <div id="session-user-fields">
+          <label for="session-user">Simulated user</label
+          ><select id="session-user"></select>
+        </div>
+        <div class="session-actions">
+          <button value="cancel">Cancel</button
+          ><button id="session-confirm" class="primary" value="confirm">
+            Use this user
+          </button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

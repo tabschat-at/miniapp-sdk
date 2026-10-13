@@ -11,6 +11,7 @@ import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { marked } from "marked";
+import { buildHostedTools } from "./build-hosted-tools.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
@@ -20,6 +21,7 @@ const pages = new Map([
   ["README.md", "/kit/"],
   ["CHANGELOG.md", "/changelog/"],
   ["RELEASING.md", "/releasing/"],
+  ["dev-tools/README.md", "/tools/"],
 ]);
 const navigation = [
   [
@@ -49,6 +51,15 @@ const navigation = [
       ["Hosting & submission", "/docs/publishing/"],
       ["Developer kit", "/kit/"],
       ["Changelog", "/changelog/"],
+    ],
+  ],
+  [
+    "Developer tools",
+    [
+      ["Host simulator", "/tools/simulator/"],
+      ["App-package builder", "/tools/package-builder/"],
+      ["Submit an app", "/submit/"],
+      ["Local tools guide", "/tools/"],
     ],
   ],
   [
@@ -82,19 +93,17 @@ const escape = (value) =>
       ],
   );
 const plain = (html) =>
-  html
-    .replace(/<[^>]+>/g, "")
-    .replace(
-      /&(?:amp|lt|gt|quot|#39);/g,
-      (s) =>
-        ({
-          "&amp;": "&",
-          "&lt;": "<",
-          "&gt;": ">",
-          "&quot;": '"',
-          "&#39;": "'",
-        })[s],
-    );
+  html.replace(/<[^>]+>/g, "").replace(
+    /&(?:amp|lt|gt|quot|#39);/g,
+    (s) =>
+      ({
+        "&amp;": "&",
+        "&lt;": "<",
+        "&gt;": ">",
+        "&quot;": '"',
+        "&#39;": "'",
+      })[s],
+  );
 const slug = (text) =>
   plain(text)
     .toLowerCase()
@@ -124,6 +133,12 @@ for (const [source, route] of pages) {
   for (const [, encoded] of links) {
     const href = plain(encoded);
     if (/^(https?:|mailto:|#)/.test(href)) continue;
+    if (
+      ["/tools/simulator/", "/tools/package-builder/", "/submit/"].includes(
+        href,
+      )
+    )
+      continue;
     if (/^[a-z]+:/i.test(href) || href.startsWith("/"))
       throw new Error(`Unexpected link in ${source}: ${href}`);
     const [file, hash] = href.split("#");
@@ -160,7 +175,7 @@ for (const [source, route] of pages) {
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escape(title)} · Tabs developers</title><meta name="description" content="${description}"><meta name="color-scheme" content="light"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/docs.css?v=${assetVersion}"><script defer data-version="${assetVersion}" src="/assets/docs.js?v=${assetVersion}"></script></head>
 <body${route === "/" ? ' class="overview"' : ""}><a class="skip" href="#content">Skip to content</a>
 <header><a class="brand" href="/" aria-label="Tabs developer home"><span class="brand-mark">t</span><strong>Tabs</strong><span class="brand-label">developers</span></a><div class="header-right"><span class="preview-badge">Developer preview</span><a href="${repository}">GitHub ↗</a></div></header>
-<div class="layout"><aside class="sidebar"><label class="search-label" for="docs-search">Search documentation</label><input id="docs-search" type="search" placeholder="Find a guide or API…" autocomplete="off"><div id="search-results" aria-live="polite"></div><details class="navigation" open><summary>Documentation</summary><nav aria-label="Documentation">${nav}</nav></details><div class="sidebar-foot"><span>SDK 0.1.0 · Bridge V1</span><a href="${repository}/blob/main/LICENSE">AGPL-3.0-only</a></div></aside>
+<div class="layout"><aside class="sidebar"><label class="search-label" for="docs-search">Search documentation</label><input id="docs-search" type="search" placeholder="Find a guide or API…" autocomplete="off"><div id="search-results" aria-live="polite"></div><details class="navigation" open><summary>Documentation</summary><nav aria-label="Documentation">${nav}</nav></details><div class="sidebar-foot"><span>SDK 0.2.0 · Bridge V1</span><a href="${repository}/blob/main/LICENSE">AGPL-3.0-only</a></div></aside>
 <main id="content"><p class="eyebrow">${route === "/" ? "THE TABS DEVELOPER KIT" : "TABS DOCUMENTATION"}</p><article>${html}</article><footer><a href="${repository}/blob/main/${source}">View this page's source ↗</a><span>Android developer preview</span></footer></main>
 <aside class="toc" aria-label="On this page"><p>On this page</p>${toc}</aside></div></body></html>`;
   const directory = path.join(output, route.slice(1));
@@ -182,6 +197,7 @@ await writeFile(
   path.join(output, "_headers"),
   "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'\n",
 );
+await buildHostedTools(output);
 // Verify generated internal paths and anchors, including cross-page API links.
 for (const [source, route] of pages) {
   const html = await readFile(

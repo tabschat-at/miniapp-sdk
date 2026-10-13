@@ -1,3 +1,4 @@
+import "../src/bootstrap.js";
 import {
   getHost,
   recordKey,

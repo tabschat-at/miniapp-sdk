@@ -7,6 +7,9 @@ export type Capability =
   | "social.public.read"
   | "records.read"
   | "records.write"
+  | "wallet.connect"
+  | "wallet.transactions"
+  | "wallet.messages"
   | "payments.request"
   | "chat.openConversation";
 export interface ManifestV1 {
@@ -51,6 +54,11 @@ export type PaymentResult =
   | { status: "cancelled" | "pending" | "failed" | "expired" };
 export interface HostBridgeV1 {
   readonly v: 1;
+  /** Present only when connected through the official browser-host bootstrap. */
+  readonly environment?: {
+    readonly kind: "browser";
+    readonly mode: "connecting" | "simulated" | "live";
+  };
   blobs: {
     upload(
       file: Blob,
@@ -90,6 +98,35 @@ export interface HostBridgeV1 {
       collection: string;
       query?: { author?: DID; limit?: string; cursor?: string };
     }): Promise<{ records: PublicRecord<T>[]; nextCursor: string | null }>;
+  };
+  readonly wallet: {
+    connect(input?: {
+      silent?: boolean;
+    }): Promise<{
+      accounts: { address: string; publicKey: string; chains: string[] }[];
+    }>;
+    disconnect(): Promise<void>;
+    signTransaction(input: {
+      address: string;
+      chain: "sui:mainnet";
+      transaction: string;
+    }): Promise<{ bytes: string; signature: string }>;
+    signAndExecuteTransaction(input: {
+      address: string;
+      chain: "sui:mainnet";
+      transaction: string;
+    }): Promise<{
+      state: string;
+      digest: string;
+      bytes?: string;
+      signature?: string;
+      effects?: string;
+    }>;
+    signPersonalMessage(input: {
+      address: string;
+      chain: "sui:mainnet";
+      message: string;
+    }): Promise<{ bytes: string; signature: string }>;
   };
   readonly payments: {
     resolve(handle: string): Promise<PaymentRecipient>;

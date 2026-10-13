@@ -42,10 +42,10 @@ in this repository. The Verify SDK workflow attaches it as an artifact. The site
 can be served by any static HTTPS host. Publish that artifact when changing docs,
 and keep the SDK version and availability information current.
 
-The initial hosted docs use Sites; its project identity and custom-domain records
-are retained in the private publication workspace. Host configuration and
-credentials do not belong in the public npm package.
+The docs and developer tools are served at https://developers.tabschat.com.
+Publish the generated site through the existing private deployment process.
+Host configuration and credentials do not belong in the public npm package.
+Keep versioned browser bootstrap URLs available when shipping future versions.
 
-The public app-submission issue template is the initial review intake. A listing
-still requires operator review, publisher verification and user consent. Do not
-promise automatic approval or a service-level agreement.
+The URL submission tool is the current review intake. Listings require operator
+review, publisher verification and user consent; submission is not publication.

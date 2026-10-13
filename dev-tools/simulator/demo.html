@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="tabs-package" href="/demo-package.json" />
+    <link rel="tabs-manifest" href="/demo-manifest.json" />
+    <link rel="icon" href="/demo-icon.svg" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Host playground</title>
+    <script src="/bridge.js"></script>
+    <script type="module" src="/demo.js"></script>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body
+    style="
+      background: var(--paper);
+      color: var(--ink);
+      padding: 26px 22px;
+      color-scheme: light;
+    "
+  >
+    <p class="eyebrow" style="color: var(--blue)">THE HOST PLAYGROUND</p>
+    <h1 style="font-size: 34px; margin-top: 28px">Hello, small world.</h1>
+    <p style="color: var(--muted); line-height: 1.7">
+      A tiny app to try the big moments: identity, consent, and connecting with
+      people.
+    </p>
+    <section style="display: grid; gap: 10px; margin-top: 28px">
+      <button class="primary" data-action="identity">
+        Read my public profile</button
+      ><button data-action="auth">Request a sign-in assertion fixture</button
+      ><button data-action="chat">Open a conversation with Bob</button
+      ><button data-action="payment">Review a 0.01 USDC payment</button
+      ><button data-action="write">Publish a fixture note</button
+      ><button data-action="read">Read fixture notes</button
+      ><button data-action="file">Select a local file</button>
+    </section>
+    <pre
+      id="result"
+      role="status"
+      style="background: var(--wash); color: var(--ink); margin-top: 22px"
+    >
+Choose an action to inspect its result.</pre>
+  </body>
+</html>
