@@ -33,7 +33,7 @@ const assets = new Set([
   "../common/records.js",
   "../common/app-package.js",
   "../common/tool-theme.css",
-  "../src/bootstrap.js",
+  "../../src/bootstrap.js",
   "../vendor/lexicon.js",
   "../vendor/LICENSES.txt",
   "../manifest-generator/fields.js",
@@ -167,7 +167,7 @@ export async function simulatorServer({ appDir, manifestFile } = {}) {
       } else {
         const name =
           pathname === "/sdk/bootstrap.js"
-            ? "../src/bootstrap.js"
+            ? "../../src/bootstrap.js"
             : pathname === "/"
               ? "index.html"
               : pathname.startsWith("/manifest-generator/") ||

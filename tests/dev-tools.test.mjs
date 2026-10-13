@@ -292,6 +292,9 @@ test("local discovery endpoint rejects foreign requests and serves all generator
     "/common/manifest.js",
     "/common/tool-theme.css",
     "/welcome-tour.js",
+    "/live-host.js",
+    "/live-session.js",
+    "/sdk/bootstrap.js",
     "/add-project.js",
   ])
     assert.equal((await fetch(base + path)).status, 200, path);
