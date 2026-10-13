@@ -1,14 +1,14 @@
 # From a page to a Tabs app
 
-SDK 0.2.0 source and the hosted bootstrap are available now. The npm release is
-pending publisher login; npm currently serves 0.1.0. For the new bundler bootstrap
-export, install the source tag until npm publication completes:
+SDK 0.2.0 is available on npm:
 
 ```sh
-npm install github:tabschat-at/miniapp-sdk#v0.2.0
+npm install @tabschat/miniapp-sdk
 ```
 
-The hosted script works with existing Bridge V1 apps and needs no npm update.
+The [browser bootstrap](../docs/testing.md) connects your app to the hosted
+simulator. The hosted script also works with existing Bridge V1 apps and needs
+no npm update.
 
 1. Clone `https://github.com/tabschat-at/miniapp-sdk.git` and run `npm run dev`
    from its root. Open the preview link for

@@ -10,15 +10,15 @@ and payment review. You own your UI and backend.
 [Browse the SDK](https://github.com/tabschat-at/miniapp-sdk) ·
 [Download the kit](https://developers.tabschat.com/downloads/tabs-developer-kit.tar.gz)
 
-SDK 0.2.0 source and the hosted bootstrap are available now. The npm release is
-pending publisher login; npm currently serves 0.1.0. For the new bundler bootstrap
-export, install the source tag until npm publication completes:
+SDK 0.2.0 is available on npm:
 
 ```sh
-npm install github:tabschat-at/miniapp-sdk#v0.2.0
+npm install @tabschat/miniapp-sdk
 ```
 
-The hosted script works with existing Bridge V1 apps and needs no npm update.
+The [browser bootstrap](../docs/testing.md) connects your app to the hosted
+simulator. The hosted script also works with existing Bridge V1 apps and needs
+no npm update.
 
 ## Build with an AI coding agent
 
