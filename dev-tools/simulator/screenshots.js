@@ -46,6 +46,8 @@ function timeout(promise, message, milliseconds = 8000) {
   ]).finally(() => clearTimeout(timer));
 }
 export function screenshotError(error) {
+  if (error?.name === "InvalidStateError")
+    return "Bring the simulator tab to the front, then use the camera button again.";
   if (["NotAllowedError", "AbortError"].includes(error?.name))
     return "Screenshot canceled. Nothing was saved.";
   if (error?.name === "NotReadableError")

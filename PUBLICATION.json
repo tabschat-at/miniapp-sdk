@@ -115,7 +115,7 @@
     "site/submission/index.html": "beda28e2e41e4d76317ea8190f6dcca94081260340f153001f5b97349938781c",
     "site/submission/style.css": "7e62ad1eb86d56b28cb584d6548be5123dab93446f1c4bd8cef7b0aa00dbf3e2",
     "site/submission/screenshots.js": "7a4952338d113afe16dc838dc7fcd10eb18447649924f96d18fa807843561317",
-    "dev-tools/simulator/screenshots.js": "40abba5326947bf79ca5d6872f891a5d33de53c00b4744fca66d3263f3738238",
+    "dev-tools/simulator/screenshots.js": "a31abfa109a204156fcc6a34a49bcb759e633b70dc38522f7f4df22be1b681d7",
     "tests/screenshots.test.mjs": "6b40e18296a5d9e4e7d9b165cd8f197548d1ddd83478bb39da220ac2793982a0"
   }
 }
