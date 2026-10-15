@@ -17,6 +17,8 @@ export const permissionLabels = {
     "Publish and manage this app’s public data under your profile",
 };
 const paths = {
+  camera:
+    '<path d="M8 5 9.5 3h5L16 5h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/>',
   close: '<path d="m6 6 12 12M6 18 18 6"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   shield: '<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6z"/>',

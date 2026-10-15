@@ -22,6 +22,7 @@ import { showPrompt, cancelPrompt } from "./sheets.js";
 import { showWelcomeTour } from "./welcome-tour.js";
 import { createLiveHost } from "./live-host.js";
 import { signInLive, signOutLive } from "./live-session.js";
+import { setupScreenshots } from "./screenshots.js";
 
 const $ = (id) => document.getElementById(id);
 let frame = $("app-frame");
@@ -691,22 +692,65 @@ function rememberDisplay() {
     ...(mode === "custom" ? { custom: viewport } : {}),
   });
 }
-let previewScale = 1;
+let previewScale = 1,
+  screenshotCapturing = false;
+$("screenshot").append(icon("camera"));
+let screenshotScroll, screenshotControls;
+setupScreenshots({
+  button: $("screenshot"),
+  phone: $("phone"),
+  getDisplay: () => ({
+    device: devices[Number($("device").value)] ?? null,
+    viewport: { ...viewport },
+    app: current?.manifest.name ?? "Tabs Apps",
+  }),
+  prepare() {
+    screenshotScroll = {
+      top: $("canvas").scrollTop,
+      left: $("canvas").scrollLeft,
+    };
+    screenshotControls = [
+      ...document.querySelectorAll(
+        ".preview-toolbar input, .preview-toolbar select, .preview-toolbar button",
+      ),
+    ].map((control) => [control, control.disabled]);
+    for (const [control] of screenshotControls) control.disabled = true;
+    screenshotCapturing = true;
+    document.body.classList.add("screenshot-capturing");
+    resize();
+    $("canvas").scrollTo(0, 0);
+  },
+  restore() {
+    screenshotCapturing = false;
+    document.body.classList.remove("screenshot-capturing");
+    for (const [control, disabled] of screenshotControls)
+      control.disabled = disabled;
+    resize();
+    $("canvas").scrollTo(screenshotScroll.left, screenshotScroll.top);
+  },
+  status: $("screenshot-status"),
+  dialog: $("screenshot-dialog"),
+  preview: $("screenshot-preview"),
+  details: $("screenshot-details"),
+  download: $("download-screenshot"),
+  close: $("close-screenshot"),
+});
 function resize() {
   const isCustom = $("device").value === "custom";
   for (const id of ["resize-width", "resize-height", "resize-both"])
     $(id).hidden = !isCustom;
-  $("width").disabled = $("height").disabled = !isCustom;
+  $("width").disabled = $("height").disabled = !isCustom || screenshotCapturing;
   const canvas = $("canvas"),
     outerWidth = viewport.width + hostChrome.border * 2,
     outerHeight = viewport.height + chromeHeight + hostChrome.border * 2;
-  const scale = $("fit").checked
-    ? Math.min(
-        1,
-        Math.max(0.1, (canvas.clientWidth - 56) / outerWidth),
-        Math.max(0.1, (canvas.clientHeight - 56) / outerHeight),
-      )
-    : 1;
+  const scale =
+    $("fit").checked || screenshotCapturing
+      ? Math.min(
+          1,
+          Math.max(0.1, (canvas.clientWidth - 56) / outerWidth),
+          Math.max(0.1, (canvas.clientHeight - 56) / outerHeight),
+        )
+      : 1;
   previewScale = scale;
   $("phone").style.width = `${outerWidth}px`;
   $("phone").style.height = `${outerHeight}px`;

@@ -15,6 +15,7 @@ const assets = new Set([
   "style.css",
   "host.js",
   "devices.js",
+  "screenshots.js",
   "motion.js",
   "preferences.js",
   "library.js",
@@ -197,7 +198,7 @@ export async function simulatorServer({ appDir, manifestFile } = {}) {
       if (!local)
         response.setHeader(
           "content-security-policy",
-          "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: http: https:; frame-src http: https:; base-uri 'none'; frame-ancestors 'self'",
+          "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob: http: https:; media-src 'self' blob:; frame-src http: https:; base-uri 'none'; frame-ancestors 'self'",
         );
       response.setHeader("content-type", type);
       response.end(request.method === "HEAD" ? undefined : body);

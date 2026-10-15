@@ -140,6 +140,27 @@ Activity includes contact preview details and host error explanations.
 
 ## Device dimensions and motion
 
+### Capture screenshots for submission
+
+Use the camera button beside the theme and reload controls in desktop Chrome or
+Edge. In the browser's sharing prompt, choose **this simulator tab**, then allow
+capture. A preview opens with **Download PNG**; capture stops immediately once
+the image is ready. Upload the downloaded file in the [app submission form](/submit/).
+The image stays in your browser until you choose to upload it there.
+
+The screenshot includes the current app, Tabs header, system bars and open host
+prompts. It excludes the device bezel, simulator controls and inspector, including
+when the app is hosted on another domain. Presets export at their listed panel
+resolution, respecting rotation and folding. Custom viewports export at their CSS
+screen dimensions, including host bars. The tool temporarily fits the complete
+device without changing the app's CSS viewport or saved display preferences.
+Export dimensions do not emulate a real device's pixel density; detail depends
+on the visible browser capture. Screenshots also work with local apps through the
+downloaded simulator. Review images for private data before submitting them.
+
+This uses the browser's [Region Capture API](https://developer.chrome.com/docs/web-platform/region-capture).
+Unsupported browsers show instructions instead of producing an incomplete image.
+
 Presets now derive the full CSS screen from the physical panel resolution and a
 reference layout density, then reserve 28 CSS px for status, 56 for the Tabs app
 header and 20 for gesture navigation. **W/H** show the remaining mini-app viewport.

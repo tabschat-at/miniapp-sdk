@@ -38,6 +38,7 @@ try {
     "dev-tools/simulator/library.js",
     "dev-tools/simulator/preferences.js",
     "dev-tools/simulator/motion.js",
+    "dev-tools/simulator/screenshots.js",
     "dev-tools/simulator/session.js",
     "dev-tools/simulator/welcome-tour.js",
     "dev-tools/common/tool-theme.css",

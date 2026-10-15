@@ -69,6 +69,11 @@ and must remain publicly accessible. Screenshots are public store artwork and
 must not contain private user data. Reviewers can keep or adjust the screenshots
 before publishing the listing. An identical pending package keeps its original
 details and screenshots; another submission does not replace that snapshot.
+To create images, use the camera button in the [host simulator](/tools/simulator/),
+choose the simulator tab in your browser's capture prompt, then select **Download
+PNG**. Change the selected phone, rotate it or fold/unfold it to capture another
+screen size. The screenshot includes Tabs host UI and exports at the selected
+device's panel resolution; Custom viewport exports CSS screen dimensions.
 Contact information is only visible to Tabs
 reviewers. Save the submission reference; email notifications are not available yet.
 The package is fetched again before submission so changes cannot bypass validation.

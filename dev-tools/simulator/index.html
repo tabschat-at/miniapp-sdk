@@ -86,6 +86,12 @@
           </div>
           <div class="preview-actions">
             <button
+              id="screenshot"
+              class="toolbar-icon"
+              aria-label="Capture screenshot"
+              title="Capture device screenshot"
+            ></button>
+            <button
               id="appearance"
               class="toolbar-icon"
               aria-label="Dark appearance"
@@ -114,6 +120,12 @@
             </button>
           </div>
         </div>
+        <p
+          id="screenshot-status"
+          class="screenshot-status"
+          role="status"
+          hidden
+        ></p>
         <div id="canvas">
           <div id="device-holder">
             <div id="phone">
@@ -384,6 +396,25 @@
           </button>
         </div>
       </form>
+    </dialog>
+    <dialog
+      id="screenshot-dialog"
+      class="screenshot-dialog"
+      aria-labelledby="screenshot-title"
+    >
+      <h2 id="screenshot-title">Device screenshot</h2>
+      <p id="screenshot-details"></p>
+      <img id="screenshot-preview" alt="Captured device screenshot" />
+      <p class="hint">
+        Saved locally. Upload this PNG in the app submission form. Screen
+        capture has stopped.
+      </p>
+      <div class="screenshot-actions">
+        <button id="close-screenshot" type="button">Close</button>
+        <a id="download-screenshot" class="screenshot-download" download
+          >Download PNG</a
+        >
+      </div>
     </dialog>
   </body>
 </html>

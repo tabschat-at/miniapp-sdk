@@ -1282,3 +1282,76 @@ button:disabled {
 #phone :is(button, input, select, textarea):focus-visible {
   outline-color: var(--native-accent);
 }
+
+.preview-toolbar #screenshot svg {
+  width: 19px;
+  height: 19px;
+}
+.screenshot-status {
+  margin: 0;
+  padding: 8px 14px;
+  font-size: 12px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+.screenshot-capturing #phone {
+  border-radius: 0;
+  border-color: transparent;
+  box-shadow: none;
+}
+.screenshot-video {
+  position: fixed;
+  left: -10px;
+  top: -10px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.screenshot-dialog {
+  max-width: min(560px, calc(100vw - 40px));
+  padding: 24px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.screenshot-dialog::backdrop {
+  background: #17293870;
+}
+.screenshot-dialog h2 {
+  margin: 0 0 8px;
+}
+#screenshot-details {
+  color: var(--muted);
+  font-size: 13px;
+}
+#screenshot-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 55vh;
+  width: auto;
+  height: auto;
+  margin: 16px auto;
+  object-fit: contain;
+}
+.screenshot-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+.screenshot-download {
+  display: inline-block;
+  padding: 9px 16px;
+  border-radius: 8px;
+  color: white;
+  background: var(--blue);
+  font-weight: 650;
+  font-size: 12px;
+  text-decoration: none;
+}
+.screenshot-download:hover {
+  background: #075467;
+}

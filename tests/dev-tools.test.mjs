@@ -294,6 +294,7 @@ test("local discovery endpoint rejects foreign requests and serves all generator
     "/welcome-tour.js",
     "/live-host.js",
     "/live-session.js",
+    "/screenshots.js",
     "/sdk/bootstrap.js",
     "/add-project.js",
   ])
