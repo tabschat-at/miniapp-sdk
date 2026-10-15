@@ -102,8 +102,37 @@
               required
               maxlength="4000"
               rows="4"
-            ></textarea></label
-          ><label class="check"
+            ></textarea>
+          </label>
+          <fieldset class="screenshots">
+            <legend>Screenshots <span class="hint">(optional)</span></legend>
+            <p class="hint" id="screenshot-help">
+              Add up to 8 screenshots using uploads, public HTTPS image links,
+              or both. PNG, JPEG and WebP uploads up to 10 MB each are optimized
+              automatically. Screenshots are public store artwork.
+            </p>
+            <label for="screenshot-files">Upload screenshots</label>
+            <input
+              id="screenshot-files"
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              multiple
+              aria-describedby="screenshot-help"
+            />
+            <label for="screenshot-url">Screenshot link</label>
+            <div class="url-row">
+              <input
+                id="screenshot-url"
+                type="url"
+                maxlength="2048"
+                placeholder="https://your-app.example.org/screenshot.png"
+              />
+              <button id="add-screenshot-url" type="button">Add link</button>
+            </div>
+            <p id="screenshot-status" role="status" aria-live="polite"></p>
+            <div id="screenshot-previews" class="screenshot-previews"></div>
+          </fieldset>
+          <label class="check"
             ><input id="ownership" type="checkbox" required />I own this app or
             am authorized to submit it.</label
           >

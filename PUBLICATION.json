@@ -61,7 +61,7 @@
     "docs/compatibility.md": "0f2f7749f3b725d90222df7c2516bfdc49752570609621192017ad1b3d98079b",
     "docs/manifest.md": "4c7e759c3765879c3dc3d3a314059421931fe47af8abd15122f67dc5345d1a2f",
     "docs/permissions.md": "2e3aa71b88c9a347ae4a4a5229bc9fdf1c0f68e1255d9be77ca2db85bb7395b7",
-    "docs/publishing.md": "01ed0ee9a709bd0317a2247fb4d294e43b6e406d7ec029ed0295c597d1a861d8",
+    "docs/publishing.md": "e3c11da39fd351736e6934e134dfecb0972545cc7e1cf4f12b4cd07e4e695bd5",
     "docs/quickstart.md": "0655fe64de81824d81a8c95418ef1c94a2ff7f776cd5e36d5fe5babaeadca9e6",
     "docs/tabs-appview.md": "cd9e0a4e260d8db85649f7d2b1ee99b951e8d2eb91700aa58364c04387c107c7",
     "docs/testing.md": "f2ec7a22248a0b2784b7d5203602e6f3acb0e2a086954f7bc7bd3f959bab345f",
@@ -111,8 +111,9 @@
     "site/docs.js": "ee6f12215c5c9b21458e73f48811dd7b390fd0bfd2e379754243402268d82c05",
     "site/favicon.svg": "a5fefbb487be54667cd068bf1b0830ea60be702209274450a275268fa5fa51fe",
     "site/home.md": "0400ac91baf5fb5dad335674bba171e51bd2e2e467c49e4ce779396582d63f91",
-    "site/submission/app.js": "211bfb54a3c04d218359d9c2b39d4b04e12c125e7739c2da0897d70acf167387",
-    "site/submission/index.html": "5998fda3d4467e6b4b97bf7efba86b1605439e516b0b994a786e4b553e91c60d",
-    "site/submission/style.css": "e53d17940120e930b95451f288ebc6151c4fd1d6c61829904df35b7e47bad6f4"
+    "site/submission/app.js": "debcdef87f5b6b41bf22f965a7c88984ebdd38bc0680b9f12572134df81317d5",
+    "site/submission/index.html": "beda28e2e41e4d76317ea8190f6dcca94081260340f153001f5b97349938781c",
+    "site/submission/style.css": "7e62ad1eb86d56b28cb584d6548be5123dab93446f1c4bd8cef7b0aa00dbf3e2",
+    "site/submission/screenshots.js": "7a4952338d113afe16dc838dc7fcd10eb18447649924f96d18fa807843561317"
   }
 }

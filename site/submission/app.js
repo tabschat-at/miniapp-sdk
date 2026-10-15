@@ -1,7 +1,18 @@
 import { permissionRows } from "/tools/simulator/native-ui.js";
+import { screenshotEditor } from "./screenshots.js";
 const $ = (id) => document.getElementById(id);
 let preview = null,
   epoch = 0;
+const screenshots = screenshotEditor({
+  files: $("screenshot-files"),
+  link: $("screenshot-url"),
+  add: $("add-screenshot-url"),
+  previews: $("screenshot-previews"),
+  status: $("screenshot-status"),
+  changed: (busy) => {
+    $("send").disabled = busy;
+  },
+});
 async function api(path, body) {
   const response = await fetch(`/developer-api/${path}`, {
     method: "POST",
@@ -9,17 +20,19 @@ async function api(path, body) {
     headers: { "content-type": "application/json" },
     body: JSON.stringify(body),
   });
-  const data = await response.json();
+  const data = await response.json().catch(() => ({}));
   if (!response.ok) {
     const code = data.error?.code;
     throw Error(
-      code === "CONFLICT"
-        ? "The package changed since discovery. Discover it again before submitting."
-        : code === "RATE_LIMITED"
-          ? "Too many requests. Please wait a minute and try again."
-          : code === "INVALID_INPUT"
-            ? "Check the fields and use a public HTTPS URL. Localhost apps need the downloaded simulator."
-            : "Could not complete this request. Please try again.",
+      response.status === 413
+        ? "These screenshots exceed the upload limit. Remove an image or use a hosted image link."
+        : code === "CONFLICT"
+          ? "The package changed since discovery. Discover it again before submitting."
+          : code === "RATE_LIMITED"
+            ? "Too many requests. Please wait a minute and try again."
+            : code === "INVALID_INPUT"
+              ? "Check the fields and screenshot links. Use public HTTPS URLs and up to 8 screenshots. Localhost apps need the downloaded simulator."
+              : "Could not complete this request. Please try again.",
     );
   }
   return data;
@@ -105,9 +118,10 @@ $("discover").addEventListener("submit", async (event) => {
 });
 $("submit").addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (!preview) return;
+  if (!preview || screenshots.busy || !screenshots.includePendingLink()) return;
   const current = epoch;
   $("send").disabled = true;
+  screenshots.lock(true);
   $("status").textContent = "Rechecking the package and submitting…";
   try {
     const data = await api("submit", {
@@ -117,6 +131,7 @@ $("submit").addEventListener("submit", async (event) => {
       email: $("email").value,
       description: $("description").value,
       ownershipAcknowledged: $("ownership").checked,
+      screenshots: screenshots.values(),
     });
     if (current !== epoch) return;
     if (!data.submitted) {
@@ -129,13 +144,14 @@ $("submit").addEventListener("submit", async (event) => {
     $("submission").hidden = true;
     $("receipt").hidden = false;
     $("reference").textContent = data.duplicate
-      ? "An identical package is already awaiting review."
+      ? "An identical package is already awaiting review. Its original details and screenshots were kept."
       : `Submission reference: ${data.id}`;
     $("status").textContent = "";
+    screenshots.clear();
     $("receipt").scrollIntoView({ behavior: "smooth", block: "center" });
   } catch (error) {
     if (current === epoch) $("status").textContent = error.message;
   } finally {
-    $("send").disabled = false;
+    screenshots.lock(false);
   }
 });

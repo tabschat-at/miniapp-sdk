@@ -61,7 +61,15 @@ and lexicons/<collection>.json paths, but explicit links are recommended.
 The submission tool fetches public metadata, validates the manifest and schemas,
 and shows requested permissions, collections, payment assets and network origins.
 Resolve validation issues, review the package, then provide your developer name,
-contact email and store description. Contact information is only visible to Tabs
+contact email and store description. Optionally add up to eight screenshots using
+uploads, public HTTPS image links, or both. PNG, JPEG and WebP files up to 10 MB
+each are optimized for upload automatically. Preview and remove images before
+submitting. Uploaded artwork is hosted by Tabs; linked images stay on your host
+and must remain publicly accessible. Screenshots are public store artwork and
+must not contain private user data. Reviewers can keep or adjust the screenshots
+before publishing the listing. An identical pending package keeps its original
+details and screenshots; another submission does not replace that snapshot.
+Contact information is only visible to Tabs
 reviewers. Save the submission reference; email notifications are not available yet.
 The package is fetched again before submission so changes cannot bypass validation.
 Localhost apps use the downloaded simulator; submission requires a public URL.
